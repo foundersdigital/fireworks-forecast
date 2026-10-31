@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fireworks Forecast</title>
+<meta name="description" content="Every public fireworks display near you in Berkshire and nearby, with start times, so you can get your dog or cat settled before the first bang. Free.">
+<meta property="og:title" content="Fireworks Forecast: know when the bangs are coming">
+<meta property="og:description" content="Put in your postcode and see every public fireworks display near you, with start times. Made for dog and cat owners.">
+<meta name="theme-color" content="#0d1424">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0d1424; --ink2:#141d33; --card:#18223b; --line:#26324f;
+  --text:#ece8df; --muted:#a2abbd; --dim:#7a849a;
+  --ember:#ffb547; --ember2:#ff8a3d; --coral:#ff6f5b; --sage:#8fd6b8; --sky:#9cc3ff;
+  --radius:16px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--ink);color:var(--text);font:16px/1.55 "DM Sans",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+  background-image:
+    radial-gradient(1px 1px at 12% 8%,#fff8 50%,transparent 51%),
+    radial-gradient(1px 1px at 72% 4%,#fff6 50%,transparent 51%),
+    radial-gradient(1.5px 1.5px at 88% 14%,#fff9 50%,transparent 51%),
+    radial-gradient(1px 1px at 35% 18%,#fff5 50%,transparent 51%),
+    radial-gradient(1px 1px at 55% 11%,#fff7 50%,transparent 51%),
+    radial-gradient(900px 420px at 80% -120px,#2a2550 0%,transparent 70%),
+    radial-gradient(700px 380px at -10% -80px,#1b2d4d 0%,transparent 70%);
+  background-repeat:no-repeat;}
+a{color:var(--ember)}
+.wrap{max-width:760px;margin:0 auto;padding:0 18px}
+header.top{display:flex;align-items:center;gap:10px;padding:18px 0 4px}
+.brand{font-family:Fraunces,Georgia,serif;font-weight:700;font-size:19px;letter-spacing:.2px}
+.brand small{display:block;font:500 12px/1.2 "DM Sans",sans-serif;color:var(--muted);letter-spacing:.3px}
+.hero{padding:26px 0 8px}
+h1{font-family:Fraunces,Georgia,serif;font-weight:700;font-size:clamp(34px,8vw,54px);line-height:1.04;margin:0 0 14px;letter-spacing:-.5px}
+h1 em{font-style:normal;color:var(--ember)}
+.lede{color:var(--muted);font-size:17.5px;max-width:560px;margin:0 0 22px}
+.search{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px;box-shadow:0 20px 50px -30px #000}
+.search label{display:block;font-weight:700;font-size:14px;margin-bottom:8px}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+input[type=text],input[type=email]{flex:1 1 200px;min-width:0;background:#0f1729;border:1px solid var(--line);color:var(--text);border-radius:12px;padding:14px 14px;font:500 17px "DM Sans",sans-serif;outline:none;text-transform:none}
+input:focus{border-color:var(--ember)}
+#pc{text-transform:uppercase}
+#pc::placeholder,#sPc::placeholder{text-transform:none}
+button,.btn{appearance:none;border:0;border-radius:12px;padding:14px 18px;font:700 16px "DM Sans",sans-serif;cursor:pointer;background:linear-gradient(180deg,var(--ember),var(--ember2));color:#1d1206;white-space:nowrap}
+button:hover{filter:brightness(1.06)}
+button.ghost{background:transparent;color:var(--text);border:1px solid var(--line);font-weight:500;padding:10px 14px;font-size:14px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px;align-items:center;color:var(--muted);font-size:14px}
+.chip{border:1px solid var(--line);background:transparent;color:var(--text);border-radius:999px;padding:6px 12px;font:500 14px "DM Sans",sans-serif;cursor:pointer}
+.chip[aria-pressed=true]{background:var(--ember);color:#1d1206;border-color:var(--ember);font-weight:700}
+.hint{color:var(--dim);font-size:13px;margin-top:10px}
+.err{color:var(--coral);font-size:14px;margin-top:10px;display:none}
+.stats{display:flex;gap:18px;flex-wrap:wrap;margin:16px 2px 0;color:var(--muted);font-size:14px}
+.stats b{color:var(--text);font-size:16px}
+section{margin:30px 0}
+h2{font-family:Fraunces,Georgia,serif;font-size:25px;line-height:1.15;margin:0 0 12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px}
+#results{display:none}
+.where{color:var(--muted);font-size:14px;margin:0 0 12px}
+.tonight{position:relative;overflow:hidden;border-radius:var(--radius);padding:20px;border:1px solid #6b4a1f;
+  background:radial-gradient(500px 220px at 100% 0%,#5a3a12 0%,transparent 70%),linear-gradient(180deg,#22203a,#1a1f36)}
+.tonight.calm{border-color:#2f5b4c;background:radial-gradient(500px 220px at 100% 0%,#1d4a3c 0%,transparent 70%),linear-gradient(180deg,#17283a,#161f35)}
+.tag{display:inline-block;font:700 12px "DM Sans",sans-serif;letter-spacing:.6px;text-transform:uppercase;padding:4px 9px;border-radius:999px;background:#ffb54722;color:var(--ember)}
+.calm .tag{background:#8fd6b822;color:var(--sage)}
+.tonight h3{font-family:Fraunces,Georgia,serif;font-size:26px;line-height:1.15;margin:10px 0 6px}
+.tonight p{margin:6px 0;color:#d9d4ca}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.mini{background:#0f172999;border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.mini span{display:block;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.5px}
+.mini b{font-size:20px}
+.radarbox{display:flex;gap:16px;align-items:center;margin-top:14px;flex-wrap:wrap}
+.radarbox svg{flex:0 0 auto}
+.radarbox .legend{color:var(--muted);font-size:13px;flex:1 1 180px}
+.night{margin-top:22px}
+.nighthead{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:8px;margin-bottom:6px}
+.nighthead h4{margin:0;font-family:Fraunces,Georgia,serif;font-size:20px}
+.nighthead .meta{color:var(--muted);font-size:13px}
+.ev{display:grid;grid-template-columns:78px 1fr;gap:12px;padding:12px 0;border-bottom:1px dashed #26324f88}
+.ev:last-child{border-bottom:0}
+.time{font:700 20px/1.1 "DM Sans",sans-serif;color:var(--ember)}
+.time small{display:block;font:500 12px "DM Sans",sans-serif;color:var(--muted);margin-top:3px}
+.time.unk{font-size:14px;color:var(--text)}
+.ev .name{font-weight:700}
+.ev .sub{color:var(--muted);font-size:14px}
+.ev .note{color:#cfc8b8;font-size:13.5px;margin-top:3px}
+.ev a.src{font-size:13px;color:var(--sky);text-decoration:none}
+.ev a.src:hover{text-decoration:underline}
+.dist{display:inline-block;font-size:12px;font-weight:700;color:#1d1206;background:var(--ember);border-radius:6px;padding:1px 6px;margin-right:6px}
+.dist.far{background:#2b3757;color:var(--text)}
+.empty{color:var(--muted);font-size:14px;padding:10px 0}
+.peaks{display:grid;gap:8px}
+.peak{display:grid;grid-template-columns:96px 1fr;gap:12px;align-items:start;padding:10px 12px;border-radius:12px;background:#0f172999;border:1px solid var(--line)}
+.peak b{font-size:14px}
+.peak div{color:var(--muted);font-size:14px}
+.peak.past{opacity:.45}
+.signup{border-radius:var(--radius);padding:22px;background:linear-gradient(160deg,#2a2148,#1b2340 60%);border:1px solid #3b3566}
+.signup h2{margin-bottom:6px}
+.signup p{color:#cfcadf;margin:0 0 14px}
+.signup .fine{font-size:12.5px;color:var(--muted);margin-top:10px}
+.done{display:none}
+.share{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.share a,.share button{font-size:14px;padding:10px 14px;border-radius:10px;text-decoration:none}
+.share a{background:#0f1729;border:1px solid var(--line);color:var(--text)}
+ol.prep{margin:0;padding-left:0;list-style:none;counter-reset:p;display:grid;gap:10px}
+ol.prep li{counter-increment:p;display:grid;grid-template-columns:30px 1fr;gap:10px}
+ol.prep li::before{content:counter(p);width:26px;height:26px;border-radius:50%;background:#ffb54722;color:var(--ember);display:grid;place-items:center;font-weight:700;font-size:13px}
+ol.prep b{display:block}
+ol.prep span{color:var(--muted);font-size:14.5px}
+footer{color:var(--dim);font-size:12.5px;padding:24px 0 40px;border-top:1px solid var(--line);margin-top:40px}
+footer p{margin:6px 0}
+.sharebar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:12px;color:var(--muted);font-size:14px}
+.sharebar a,.sharebar button{font:500 14px "DM Sans",sans-serif;padding:9px 13px;border-radius:10px;text-decoration:none;background:#0f1729;border:1px solid var(--line);color:var(--text);cursor:pointer}
+.preview-note{display:none;margin-top:10px;font-size:13px;color:var(--ember)}
+@media (max-width:520px){
+  .grid2{grid-template-columns:1fr 1fr}
+  .ev{grid-template-columns:64px 1fr}
+  .peak{grid-template-columns:82px 1fr}
+  .row button{flex:1 1 100%}
+  #geoBtn{margin-left:0!important}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <svg width="38" height="38" viewBox="0 0 40 40" aria-hidden="true">
+      <circle cx="20" cy="20" r="19" fill="#18223b" stroke="#26324f"/>
+      <path d="M24.5 9.5a11 11 0 1 0 6 18.6A9 9 0 0 1 24.5 9.5z" fill="#ece8df"/>
+      <g stroke="#ffb547" stroke-width="2" stroke-linecap="round">
+        <path d="M11 11l2 2M9 17h2.6M14 7.5l.6 2.6"/>
+      </g>
+    </svg>
+    <div class="brand">Fireworks Forecast<small>For dog and cat owners · Berkshire &amp; nearby</small></div>
+  </header>
+
+  <div class="hero">
+    <h1>Know when the <em>bangs</em> are coming.</h1>
+    <p class="lede">Every public fireworks display near you, with start times. Walk the dog early, close the curtains and be home before the first bang.</p>
+
+    <form class="search" id="searchForm" autocomplete="on">
+      <label for="pc">Your postcode</label>
+      <div class="row">
+        <input id="pc" name="postcode" type="text" inputmode="text" autocomplete="postal-code" placeholder="e.g. SL6 1AB or SL6" maxlength="9" required>
+        <button type="submit">Show my forecast</button>
+      </div>
+      <div class="chips" role="group" aria-label="Distance">
+        Within
+        <button type="button" class="chip" data-r="3" aria-pressed="false">3 mi</button>
+        <button type="button" class="chip" data-r="5" aria-pressed="false">5 mi</button>
+        <button type="button" class="chip" data-r="10" aria-pressed="true">10 mi</button>
+        <button type="button" class="chip" data-r="15" aria-pressed="false">15 mi</button>
+        <button type="button" class="ghost" id="geoBtn" style="margin-left:auto">Use my location</button>
+      </div>
+      <div class="err" id="err"></div>
+      <div class="hint">Fireworks can be heard 3 to 5 miles away on a still night, further for big racecourse shows.</div>
+    </form>
+    <div class="stats" id="stats"></div>
+  </div>
+
+  <div id="results">
+    <section>
+      <p class="where" id="where"></p>
+      <div id="tonight"></div>
+    </section>
+    <section>
+      <h2>Night by night</h2>
+      <div id="nights"></div>
+    </section>
+  </div>
+
+  <section id="signupSec">
+    <div class="signup">
+      <div id="signupForm">
+        <h2>Get a heads-up on display days</h2>
+        <p>One short email on the morning of any display near you, plus a reminder before New Year's Eve. Free.</p>
+        <form id="sf" class="row" novalidate>
+          <input id="sEmail" type="email" name="email" autocomplete="email" placeholder="Your email" required>
+          <input id="sPc" type="text" name="postcode" autocomplete="postal-code" placeholder="Postcode" style="flex:0 1 130px;text-transform:uppercase" maxlength="9" required>
+          <button type="submit" id="sBtn">Send me alerts</button>
+        </form>
+        <div class="err" id="sErr"></div>
+        <div class="fine">Fireworks alerts only. Unsubscribe any time. Run by a local dog owner, not an ad network.</div>
+        <div class="preview-note" id="previewNote">Preview: signups are not connected yet, so nothing was saved.</div>
+      </div>
+      <div class="done" id="signupDone">
+        <h2>You're on the list.</h2>
+        <p>We'll email you on the morning of any display near you. Know a neighbour whose dog hates fireworks? Send this their way:</p>
+        <div class="share" id="shareBox"></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>The big nights for garden fireworks</h2>
+    <p class="where">Back-garden fireworks aren't listed anywhere. These are the nights they peak. By law, fireworks must stop at 11pm, except on the nights shown with a later time.</p>
+    <div class="peaks" id="peaks"></div>
+  </section>
+
+  <section>
+    <h2>Before the bangs</h2>
+    <div class="card">
+      <ol class="prep">
+        <li><div><b>Walk early</b><span>Do the evening walk before dusk and keep them on the lead. Frightened dogs bolt.</span></div></li>
+        <li><div><b>Make a den</b><span>A covered crate or quiet corner with their own bedding gives them somewhere to hide.</span></div></li>
+        <li><div><b>Shut out the night</b><span>Close windows and curtains, and put the TV or radio on to soften the bangs.</span></div></li>
+        <li><div><b>Check the microchip</b><span>Make sure their microchip details and ID tag are up to date before the season starts.</span></div></li>
+        <li><div><b>Stay calm and normal</b><span>Let them hide if they want to. Keep cats indoors and give them a litter tray.</span></div></li>
+        <li><div><b>Very scared? Call your vet now</b><span>There's still time to get help in place before New Year's Eve.</span></div></li>
+      </ol>
+      <p class="hint">More advice from the <a href="https://www.rspca.org.uk/getinvolved/campaign/fireworks" target="_blank" rel="noopener">RSPCA</a>.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="card">
+      <h2 style="font-size:21px">Know a display we've missed?</h2>
+      <p class="where" style="margin:0" id="addLine">Tell us the name, place, date and time and we'll add it.</p>
+    </div>
+  </section>
+
+  <footer>
+    <p><b>How this works.</b> Listings are compiled by hand from organiser, council and ticketing pages. Last checked <span id="checked"></span>. Times can change, so check the organiser's page (the "Source" link) before you plan around it. Not affiliated with any organiser.</p>
+    <p>Distances are straight-line from the middle of your postcode area. Your search stays in your browser.</p>
+    <p id="privacy"><b>Privacy.</b> If you sign up, your email and postcode are used only to send fireworks alerts for your area. They are never shared or sold. Reply STOP to any email to unsubscribe.</p>
+    <p>Contains OS data © Crown copyright and database right 2026. Contains Royal Mail data © Royal Mail copyright and database right 2026. Source: Office for National Statistics, licensed under the Open Government Licence v3.0.</p>
+    <p>Made in Maidenhead.</p>
+  </footer>
+</div>
+
+<script>
+/* ---------- Config (edit at launch) ---------- */
+const CONFIG = /*__CONFIG__*/{};
+const EVENTS = /*__EVENTS__*/[];
+const DISTRICTS = /*__DISTRICTS__*/{};
+const CHECKED = "/*__CHECKED__*/";
+
+/* ---------- Helpers ---------- */
+const $ = s => document.querySelector(s);
+const TZ = 'Europe/London';
+function londonDate(d){ return new Intl.DateTimeFormat('en-CA',{timeZone:TZ,year:'numeric',month:'2-digit',day:'2-digit'}).format(d); }
+function londonHM(d){ return new Intl.DateTimeFormat('en-GB',{timeZone:TZ,hour:'2-digit',minute:'2-digit',hour12:false}).format(d); }
+function today(){ return window.FF_TODAY || londonDate(new Date()); }
+function nice(dstr, opts){ const [y,m,d]=dstr.split('-').map(Number); return new Intl.DateTimeFormat('en-GB',Object.assign({weekday:'short',day:'numeric',month:'short',timeZone:'UTC'},opts||{})).format(new Date(Date.UTC(y,m-1,d,12))); }
+function addDays(dstr,n){ const [y,m,d]=dstr.split('-').map(Number); const t=new Date(Date.UTC(y,m-1,d+n,12)); return t.toISOString().slice(0,10); }
+function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+const R2D=180/Math.PI, D2R=Math.PI/180;
+function miles(a,b){ const dLat=(b.lat-a.lat)*D2R, dLng=(b.lng-a.lng)*D2R; const h=Math.sin(dLat/2)**2+Math.cos(a.lat*D2R)*Math.cos(b.lat*D2R)*Math.sin(dLng/2)**2; return 3958.8*2*Math.asin(Math.sqrt(h)); }
+function bearing(a,b){ const y=Math.sin((b.lng-a.lng)*D2R)*Math.cos(b.lat*D2R); const x=Math.cos(a.lat*D2R)*Math.sin(b.lat*D2R)-Math.sin(a.lat*D2R)*Math.cos(b.lat*D2R)*Math.cos((b.lng-a.lng)*D2R); return (Math.atan2(y,x)*R2D+360)%360; }
+function fmtMi(m){ return m<10 ? m.toFixed(1) : String(Math.round(m)); }
+function compass(deg){ return ['N','NE','E','SE','S','SW','W','NW'][Math.round(deg/45)%8]; }
+
+/* Sunset (sunrise equation), returns a Date */
+function sunset(dstr, lat, lng){
+  const [y,m,d]=dstr.split('-').map(Number);
+  const jd = Date.UTC(y,m-1,d,12)/86400000 + 2440587.5;
+  const n = Math.round(jd - 2451545.0 + 0.0008);
+  const Js = n - lng/360;
+  const M = (357.5291 + 0.98560028*Js) % 360;
+  const C = 1.9148*Math.sin(M*D2R) + 0.02*Math.sin(2*M*D2R) + 0.0003*Math.sin(3*M*D2R);
+  const L = (M + C + 180 + 102.9372) % 360;
+  const Jt = 2451545.0 + Js + 0.0053*Math.sin(M*D2R) - 0.0069*Math.sin(2*L*D2R);
+  const dec = Math.asin(Math.sin(L*D2R)*Math.sin(23.4397*D2R));
+  const cw = (Math.sin(-0.833*D2R) - Math.sin(lat*D2R)*Math.sin(dec)) / (Math.cos(lat*D2R)*Math.cos(dec));
+  const w = Math.acos(Math.max(-1,Math.min(1,cw)))*R2D;
+  return new Date((Jt + w/360 - 2440587.5)*86400000);
+}
+
+/* Postcode parsing */
+function outward(raw){
+  const s = raw.toUpperCase().replace(/[^A-Z0-9]/g,'');
+  if (!s) return null;
+  if (/^[A-Z]{1,2}\d[A-Z\d]?\d[A-Z]{2}$/.test(s)) return { out: s.slice(0,-3), full: s.slice(0,-3)+' '+s.slice(-3) };
+  if (/^[A-Z]{1,2}\d[A-Z\d]?$/.test(s)) return { out: s, full: null };
+  return null;
+}
+async function preciseLookup(full){
+  if (!full) return null;
+  try{
+    const ctl = new AbortController(); const t = setTimeout(()=>ctl.abort(), 2500);
+    const r = await fetch('https://api.postcodes.io/postcodes/'+encodeURIComponent(full), {signal:ctl.signal});
+    clearTimeout(t);
+    if (!r.ok) return null;
+    const j = await r.json();
+    if (j && j.result && j.result.latitude) return { lat:j.result.latitude, lng:j.result.longitude };
+  }catch(e){}
+  return null;
+}
+
+/* ---------- State ---------- */
+let radius = 10, here = null;
+try{ const r = localStorage.getItem('ff_radius'); if (r) radius = +r; }catch(e){}
+function setChips(){ document.querySelectorAll('.chip').forEach(c=>c.setAttribute('aria-pressed', String(+c.dataset.r===radius))); }
+setChips();
+
+/* ---------- Stats + peaks ---------- */
+function renderStats(){
+  const t = today();
+  const upcoming = EVENTS.filter(e=>e.d>=t && e.s==='on');
+  const towns = new Set(upcoming.map(e=>e.t.split(' (')[0]));
+  $('#stats').innerHTML = `<span><b>${upcoming.length}</b> displays listed</span><span><b>${towns.size}</b> towns and villages</span><span>Checked <b>${esc(nice(CHECKED,{weekday:undefined}))}</b></span>`;
+  $('#checked').textContent = nice(CHECKED,{weekday:'long'});
+}
+const PEAKS = [
+  {d:'2026-10-31', t:'Halloween', x:'Some early displays and garden fireworks.', c:'11pm'},
+  {d:'2026-11-05', t:'Bonfire Night', x:'The busiest night for garden fireworks.', c:'midnight'},
+  {d:'2026-11-06', t:'Friday', x:'School, club and village displays.', c:'11pm'},
+  {d:'2026-11-07', t:'Saturday', x:'The biggest night for public displays.', c:'11pm'},
+  {d:'2026-11-08', t:'Diwali', x:'Garden fireworks, especially in Slough, Reading and west London.', c:'1am'},
+  {d:'2026-12-31', t:"New Year's Eve", x:'Fireworks at midnight almost everywhere.', c:'1am'},
+];
+function renderPeaks(){
+  const t = today();
+  $('#peaks').innerHTML = PEAKS.map(p=>`<div class="peak ${p.d<t?'past':''}"><b>${esc(nice(p.d))}</b><div><b style="color:var(--text)">${esc(p.t)}.</b> ${esc(p.x)} Fireworks allowed until ${esc(p.c)}.</div></div>`).join('');
+}
+
+/* ---------- Radar ---------- */
+function radar(list, rmax){
+  const S=150, c=S/2, rr=c-10;
+  const rings=[1/3,2/3,1].map(f=>`<circle cx="${c}" cy="${c}" r="${rr*f}" fill="none" stroke="#2a3655" stroke-dasharray="${f<1?'2 4':'0'}"/>`).join('');
+  const dots=list.map(e=>{const r=Math.min(1,e.mi/rmax)*rr, a=(e.br-90)*D2R; const x=c+r*Math.cos(a), y=c+r*Math.sin(a); return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="5" fill="#ffb547" stroke="#1d1206" stroke-width="1.5"><title>${esc(e.n)}</title></circle>`;}).join('');
+  return `<svg width="${S}" height="${S}" viewBox="0 0 ${S} ${S}" role="img" aria-label="Displays around you">${rings}
+    <text x="${c}" y="12" fill="#7a849a" font-size="10" text-anchor="middle">N</text>
+    <circle cx="${c}" cy="${c}" r="5" fill="#8fd6b8"/>${dots}</svg>`;
+}
+
+/* ---------- Share bar ---------- */
+function shareBar(msg, area){
+  const base = (CONFIG.siteUrl || location.href.split('#')[0].split('?')[0]);
+  const url = base + '?src=share' + (area ? '#' + area.toLowerCase() : '');
+  const full = msg + ' ' + url;
+  return `<div class="sharebar">Know a dog owner nearby?
+    <a href="https://wa.me/?text=${encodeURIComponent(full)}" target="_blank" rel="noopener">Send on WhatsApp</a>
+    <a href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}" target="_blank" rel="noopener">Share on Facebook</a>
+    <button type="button" data-copy="${esc(full)}" class="copyShare">Copy message</button></div>`;
+}
+document.addEventListener('click', async ev => {
+  const b = ev.target.closest('.copyShare'); if (!b) return;
+  try{ await navigator.clipboard.writeText(b.dataset.copy); b.textContent='Copied'; }catch(e){ b.textContent='Copy failed'; }
+});
+
+/* ---------- Results ---------- */
+function timeCell(e){
+  if (e.f) return `<div class="time">${esc(e.f)}${e.g?`<small>gates ${esc(e.g)}</small>`:''}</div>`;
+  return `<div class="time unk">After dark<small>${e.g?`gates ${esc(e.g)}`:'time not published'}</small></div>`;
+}
+function evRow(e){
+  const far = e.mi>radius*0.6 ? ' far':'';
+  const src = e.st==='organiser'?"Organiser's page":e.st==='council'?'Council listing':e.st==='ticketing'?'Ticket page':'Listing';
+  return `<div class="ev">${timeCell(e)}<div>
+    <div class="name">${esc(e.n)}</div>
+    <div class="sub"><span class="dist${far}">${fmtMi(e.mi)} mi ${compass(e.br)}</span>${esc(e.v)}${e.t && !e.v.includes(e.t.split(' (')[0])?', '+esc(e.t):''}</div>
+    ${e.note?`<div class="note">${esc(e.note)}</div>`:''}
+    <a class="src" href="${esc(e.u)}" target="_blank" rel="noopener">${src} ↗</a>
+  </div></div>`;
+}
+function render(){
+  if (!here) return;
+  const t = today();
+  const all = EVENTS.filter(e=>e.d>=t && e.s==='on').map(e=>Object.assign({}, e, {mi:miles(here,e), br:bearing(here,e)}));
+  const near = all.filter(e=>e.mi<=radius).sort((a,b)=>a.d.localeCompare(b.d)||(a.f||'99').localeCompare(b.f||'99')||a.mi-b.mi);
+  const nearest = all.reduce((m,e)=>Math.min(m,e.mi), Infinity);
+  $('#results').style.display='block';
+  $('#where').innerHTML = `Displays within <b>${radius} miles</b> of <b>${esc(here.label)}</b>.`;
+
+  // Not covered
+  if (nearest > 25){
+    $('#tonight').innerHTML = `<div class="tonight calm"><span class="tag">Not covered yet</span><h3>We don't cover ${esc(here.label)} yet.</h3><p>Fireworks Forecast started in Berkshire and the towns around it. Leave your email below and we'll tell you when your area is added, plus a heads-up before New Year's Eve.</p></div>`;
+    $('#nights').innerHTML = '';
+    $('#sPc').value = $('#sPc').value || here.code || '';
+    return;
+  }
+
+  // Tonight / next
+  const todays = near.filter(e=>e.d===t);
+  const ss = sunset(t, here.lat, here.lng);
+  const ssHM = londonHM(ss);
+  const walkBy = londonHM(new Date(ss.getTime()-15*60000));
+  let html='';
+  if (todays.length){
+    const known = todays.filter(e=>e.f).map(e=>e.f).sort();
+    const first = known[0] || 'after dark';
+    const closest = todays.reduce((a,b)=>a.mi<b.mi?a:b);
+    html = `<div class="tonight"><span class="tag">Tonight · ${esc(nice(t))}</span>
+      <h3>${todays.length} display${todays.length>1?'s':''} within ${radius} miles tonight.</h3>
+      <p>Closest: ${esc(closest.n)}, ${fmtMi(closest.mi)} miles ${compass(closest.br)}.</p>
+      <div class="grid2">
+        <div class="mini"><span>Walk by</span><b>${walkBy}</b></div>
+        <div class="mini"><span>First bangs</span><b>${esc(first==='after dark'?'After dark':first)}</b></div>
+      </div>
+      <div class="radarbox">${radar(todays, radius)}<div class="legend">You're the green dot. Orange dots are tonight's displays, outer ring = ${radius} miles. Sunset is ${ssHM}.</div></div>
+    </div>`;
+  } else {
+    const next = near[0];
+    const peakToday = PEAKS.find(p=>p.d===t);
+    html = `<div class="tonight calm"><span class="tag">Tonight · ${esc(nice(t))}</span>
+      <h3>No public displays listed within ${radius} miles tonight.</h3>
+      <p>${peakToday?`It's ${esc(peakToday.t)}, so garden fireworks are still likely. `:'Garden fireworks are still possible. '}Sunset is ${ssHM}; walk by ${walkBy} to be safe.</p>
+      ${next?`<p><b>Next display near you:</b> ${esc(nice(next.d))}${next.f?' at '+esc(next.f):''}, ${esc(next.n)} (${fmtMi(next.mi)} mi ${compass(next.br)}).</p>`:`<p>No upcoming public displays listed within ${radius} miles. Try a wider distance.</p>`}
+    </div>`;
+  }
+  const area = (outward(here.code||'')||{}).out || '';
+  const place = here.label.replace(/^[A-Z0-9 ]+ \((.*)\)$/,'$1');
+  const shareMsg = todays.length
+    ? `Fireworks near ${place} tonight: ${todays.length} public display${todays.length>1?'s':''}, first bangs ${(todays.filter(e=>e.f).map(e=>e.f).sort()[0])||'after dark'}. Free forecast for pet owners:`
+    : `Fireworks displays near ${place} this week, with start times, so you can get the dog walked and settled first:`;
+  html += shareBar(shareMsg, area);
+  $('#tonight').innerHTML = html;
+
+  // Night by night
+  const byDate = {};
+  near.forEach(e=>{(byDate[e.d]=byDate[e.d]||[]).push(e);});
+  const dates = Object.keys(byDate).sort();
+  if (!dates.length){ $('#nights').innerHTML = `<p class="empty">No public displays listed within ${radius} miles. Try 15 miles, or check back: we add displays daily.</p>`; }
+  else $('#nights').innerHTML = dates.map(d=>{
+    const list = byDate[d];
+    const known = list.filter(e=>e.f).map(e=>e.f).sort();
+    const s = londonHM(sunset(d, here.lat, here.lng));
+    return `<div class="night"><div class="nighthead"><h4>${esc(nice(d,{weekday:'long'}))}</h4>
+      <span class="meta">${list.length} display${list.length>1?'s':''} · sunset ${s}${known.length?` · first bangs ${known[0]}`:''}</span></div>
+      ${list.map(evRow).join('')}</div>`;
+  }).join('');
+  if (!$('#sPc').value) $('#sPc').value = here.code || '';
+}
+
+/* ---------- Search ---------- */
+function showErr(msg){ const el=$('#err'); el.textContent=msg; el.style.display=msg?'block':'none'; }
+async function search(raw){
+  showErr('');
+  const p = outward(raw||'');
+  if (!p){ showErr("That doesn't look like a UK postcode. Try something like SL6 1AB, or just the first part, SL6."); return; }
+  const dist = DISTRICTS[p.out];
+  if (!dist){ showErr(`We couldn't find ${p.out}. Check the postcode and try again.`); return; }
+  here = { lat:dist[0], lng:dist[1], label: `${p.out}${dist[2]?' ('+dist[2]+')':''}`, code: p.full || p.out };
+  render();
+  const precise = await preciseLookup(p.full);
+  if (precise){ here = Object.assign(here, precise, {label: `${p.full}${dist[2]?' ('+dist[2]+')':''}`}); render(); }
+  try{ if (location.hash !== '#'+p.out.toLowerCase()) history.replaceState(null,'','#'+p.out.toLowerCase()); }catch(e){}
+  if (window.innerWidth<700) $('#results').scrollIntoView({behavior:'smooth', block:'start'});
+}
+$('#searchForm').addEventListener('submit', e=>{ e.preventDefault(); search($('#pc').value); });
+document.querySelectorAll('.chip').forEach(c=>c.addEventListener('click', ()=>{ radius=+c.dataset.r; setChips(); try{localStorage.setItem('ff_radius',radius);}catch(e){} render(); }));
+$('#geoBtn').addEventListener('click', ()=>{
+  if (!navigator.geolocation){ showErr('Location is not available here. Type your postcode instead.'); return; }
+  navigator.geolocation.getCurrentPosition(pos=>{
+    here = { lat:pos.coords.latitude, lng:pos.coords.longitude, label:'your location', code:'' };
+    showErr(''); render();
+  }, ()=>showErr('Location is not available here. Type your postcode instead.'), {timeout:8000, maximumAge:600000});
+});
+
+/* ---------- Signup ---------- */
+function source(){
+  try{ const q = new URLSearchParams(location.search); return q.get('src') || q.get('utm_source') || document.referrer.replace(/^https?:\/\/([^/]+).*/,'$1') || 'direct'; }catch(e){ return 'direct'; }
+}
+function shareLinks(){
+  const url = CONFIG.siteUrl || location.href.split('#')[0];
+  const msg = `Free fireworks forecast for pet owners: put in your postcode and see every display near you, with start times. ${url}`;
+  return `<a href="https://wa.me/?text=${encodeURIComponent(msg)}" target="_blank" rel="noopener">WhatsApp</a>
+    <a href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}" target="_blank" rel="noopener">Facebook</a>
+    <button type="button" class="ghost" id="copyBtn">Copy link</button>`;
+}
+$('#sf').addEventListener('submit', async e=>{
+  e.preventDefault();
+  const email = $('#sEmail').value.trim(), pc = $('#sPc').value.trim();
+  const err = $('#sErr');
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){ err.textContent='Please enter a valid email address.'; err.style.display='block'; return; }
+  const p = outward(pc);
+  if (!p){ err.textContent='Please add your postcode (the first part is fine, e.g. SL6) so we only alert you about nearby displays.'; err.style.display='block'; return; }
+  err.style.display='none';
+  $('#sBtn').disabled = true; $('#sBtn').textContent = 'Signing you up...';
+  const s = CONFIG.signup || {};
+  let ok = true;
+  try{
+    if (s.type === 'googleform'){
+      const fd = new FormData();
+      fd.append(s.emailField, email); fd.append(s.postcodeField, p.full || p.out);
+      if (s.sourceField) fd.append(s.sourceField, source());
+      await fetch(s.action, {method:'POST', mode:'no-cors', body:fd});
+    } else if (s.type === 'buttondown'){
+      const fd = new FormData(); fd.append('email', email); fd.append('metadata__postcode', p.full || p.out); fd.append('metadata__district', p.out); fd.append('tag', p.out); fd.append('referrer_url', source());
+      await fetch(`https://buttondown.com/api/emails/embed-subscribe/${s.username}`, {method:'POST', mode:'no-cors', body:fd});
+    } else if (s.type === 'kit'){
+      const fd = new FormData(); fd.append('email_address', email); fd.append('fields[postcode]', p.full || p.out);
+      await fetch(`https://app.kit.com/forms/${s.formId}/subscriptions`, {method:'POST', mode:'no-cors', body:fd});
+    } else {
+      $('#previewNote').style.display='block';
+      $('#sBtn').disabled=false; $('#sBtn').textContent='Send me alerts';
+      return;
+    }
+  }catch(x){ ok = false; }
+  if (!ok){ err.textContent='Something went wrong. Please try again in a moment.'; err.style.display='block'; $('#sBtn').disabled=false; $('#sBtn').textContent='Send me alerts'; return; }
+  try{ localStorage.setItem('ff_signed','1'); }catch(e){}
+  $('#signupForm').style.display = 'none';
+  $('#signupDone').style.display = 'block';
+  $('#shareBox').innerHTML = shareLinks();
+  $('#copyBtn').addEventListener('click', async ()=>{ try{ await navigator.clipboard.writeText(CONFIG.siteUrl || location.href.split('#')[0]); $('#copyBtn').textContent='Copied'; }catch(e){ $('#copyBtn').textContent=CONFIG.siteUrl||location.href.split('#')[0]; } });
+});
+
+/* ---------- Add display line ---------- */
+(function(){
+  const el = $('#addLine');
+  if (CONFIG.addDisplayUrl) el.innerHTML = `Tell us the name, place, date and time and we'll add it. <a href="${esc(CONFIG.addDisplayUrl)}" target="_blank" rel="noopener">Add a display ↗</a>`;
+  else if (CONFIG.contactEmail) el.innerHTML = `Email the name, place, date and time to <b>${esc(CONFIG.contactEmail)}</b> and we'll add it.`;
+})();
+
+/* ---------- Privacy owner ---------- */
+if (CONFIG.privacyOwner) $('#privacy').insertAdjacentHTML('beforeend', ' Data controller: ' + esc(CONFIG.privacyOwner) + '.');
+
+/* ---------- Boot ---------- */
+renderStats(); renderPeaks();
+(function(){
+  let pre = '';
+  try{ pre = (location.hash||'').replace('#',''); if (!pre) pre = new URLSearchParams(location.search).get('pc') || ''; }catch(e){}
+  if (pre && outward(pre)){ $('#pc').value = pre.toUpperCase(); search(pre); }
+})();
+</script>
+</body>
+</html>
