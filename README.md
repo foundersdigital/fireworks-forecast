@@ -2,7 +2,7 @@
 
 Free, non-commercial site for dog and cat owners in Berkshire and nearby towns: enter a postcode and see every public fireworks display listed near you, with start times, a "walk by" time before sunset, and an email heads-up signup.
 
-- Live: https://foundersdigital.github.io/fireworks-forecast/
+- Live: https://fireworksforecast.co.uk/
 - Single self-contained `index.html` (data embedded). Signups post to a Google Form whose responses land in the "Fireworks Forecast (Responses)" sheet.
 - Listings are compiled from organiser, council and ticketing pages; each one links to its source.
 
