@@ -123,6 +123,12 @@ footer p{margin:6px 0}
   #geoBtn{margin-left:0!important}
 }
 </style>
+<script>
+/* GoatCounter: cookieless, no personal data. Page views carry the ?src tag so we can see which outreach worked. */
+(function(){ var src=''; try{ var q=new URLSearchParams(location.search); src=q.get('src')||q.get('utm_source')||''; }catch(e){}
+  window.goatcounter = { path: function(p){ return p + (src ? '?src=' + encodeURIComponent(src) : ''); } }; })();
+</script>
+<script data-goatcounter="https://fireworksforecast.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 </head>
 <body>
 <div class="wrap">
@@ -225,7 +231,7 @@ footer p{margin:6px 0}
   <footer>
     <p><b>How this works.</b> Listings are compiled by hand from organiser, council and ticketing pages. Last checked <span id="checked"></span>. Times can change, so check the organiser's page (the "Source" link) before you plan around it. Not affiliated with any organiser.</p>
     <p>Distances are straight-line from the middle of your postcode area. Your search stays in your browser.</p>
-    <p id="privacy"><b>Privacy.</b> If you sign up, your email and postcode are used only to send fireworks alerts for your area. They are never shared or sold. Reply STOP to any email to unsubscribe.</p>
+    <p id="privacy"><b>Privacy.</b> If you sign up, your email and postcode are used only to send fireworks alerts for your area. They are never shared or sold. Reply STOP to any email to unsubscribe. Visits are counted with GoatCounter, which uses no cookies and does not track you across sites.</p>
     <p>Contains OS data © Crown copyright and database right 2026. Contains Royal Mail data © Royal Mail copyright and database right 2026. Source: Office for National Statistics, licensed under the Open Government Licence v3.0.</p>
     <p>Made in Maidenhead.</p>
   </footer>
@@ -239,6 +245,7 @@ const DISTRICTS = {"AB10":[57.1354,-2.1208,"Aberdeen"],"AB11":[57.1393,-2.093,"A
 const CHECKED = "2026-10-31";
 
 /* ---------- Helpers ---------- */
+function track(name){ try{ if (window.goatcounter && window.goatcounter.count) window.goatcounter.count({ path: name, title: name, event: true }); }catch(e){} }
 const $ = s => document.querySelector(s);
 const TZ = 'Europe/London';
 function londonDate(d){ return new Intl.DateTimeFormat('en-CA',{timeZone:TZ,year:'numeric',month:'2-digit',day:'2-digit'}).format(d); }
@@ -337,8 +344,11 @@ function shareBar(msg, area){
     <a href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}" target="_blank" rel="noopener">Share on Facebook</a>
     <button type="button" data-copy="${esc(full)}" class="copyShare">Copy message</button></div>`;
 }
+document.addEventListener('click', ev => {
+  const a = ev.target.closest('.sharebar a, .share a'); if (a) track('share/' + (a.href.includes('wa.me') ? 'whatsapp' : 'facebook'));
+});
 document.addEventListener('click', async ev => {
-  const b = ev.target.closest('.copyShare'); if (!b) return;
+  const b = ev.target.closest('.copyShare'); if (!b) return; track('share/copy');
   try{ await navigator.clipboard.writeText(b.dataset.copy); b.textContent='Copied'; }catch(e){ b.textContent='Copy failed'; }
 });
 
@@ -436,6 +446,7 @@ async function search(raw){
   if (!dist){ showErr(`We couldn't find ${p.out}. Check the postcode and try again.`); return; }
   here = { lat:dist[0], lng:dist[1], label: `${p.out}${dist[2]?' ('+dist[2]+')':''}`, code: p.full || p.out };
   render();
+  track('search/' + p.out);
   const precise = await preciseLookup(p.full);
   if (precise){ here = Object.assign(here, precise, {label: `${p.full}${dist[2]?' ('+dist[2]+')':''}`}); render(); }
   try{ if (location.hash !== '#'+p.out.toLowerCase()) history.replaceState(null,'','#'+p.out.toLowerCase()); }catch(e){}
@@ -444,6 +455,7 @@ async function search(raw){
 $('#searchForm').addEventListener('submit', e=>{ e.preventDefault(); search($('#pc').value); });
 document.querySelectorAll('.chip').forEach(c=>c.addEventListener('click', ()=>{ radius=+c.dataset.r; setChips(); try{localStorage.setItem('ff_radius',radius);}catch(e){} render(); }));
 $('#geoBtn').addEventListener('click', ()=>{
+  track('search/location');
   if (!navigator.geolocation){ showErr('Location is not available here. Type your postcode instead.'); return; }
   navigator.geolocation.getCurrentPosition(pos=>{
     here = { lat:pos.coords.latitude, lng:pos.coords.longitude, label:'your location', code:'' };
@@ -493,6 +505,7 @@ $('#sf').addEventListener('submit', async e=>{
   }catch(x){ ok = false; }
   if (!ok){ err.textContent='Something went wrong. Please try again in a moment.'; err.style.display='block'; $('#sBtn').disabled=false; $('#sBtn').textContent='Send me alerts'; return; }
   try{ localStorage.setItem('ff_signed','1'); }catch(e){}
+  track('signup/' + (source() || 'direct'));
   $('#signupForm').style.display = 'none';
   $('#signupDone').style.display = 'block';
   $('#shareBox').innerHTML = shareLinks();
