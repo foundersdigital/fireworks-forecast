@@ -125,7 +125,8 @@ footer p{margin:6px 0}
 </style>
 <script>
 /* GoatCounter: cookieless, no personal data. It reads the ?src tag as the referrer, so pages stay clean and outreach sources show under Top referrers. */
-window.goatcounter = { path: function(){ return location.pathname || '/'; } };
+(function(){ var src=''; try{ var q=new URLSearchParams(location.search); src=q.get('src')||q.get('utm_source')||''; }catch(e){}
+  window.goatcounter = { path: function(){ return location.pathname || '/'; }, referrer: function(){ return src || document.referrer || ''; } }; })();
 </script>
 <script data-goatcounter="https://fireworksforecast.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 </head>
