@@ -194,7 +194,8 @@ footer p{margin:6px 0}
       </div>
       <div class="done" id="signupDone">
         <h2>You're on the list.</h2>
-        <p>We'll email you on the morning of any display near you. Know a neighbour whose dog hates fireworks? Send this their way:</p>
+        <p>We'll email you on the morning of any display near you.</p>
+        <p><b>Know someone whose dog or cat hates fireworks?</b> Send them the list for your area. It's free, and it takes them ten seconds to check their own postcode.</p>
         <div class="share" id="shareBox"></div>
       </div>
     </div>
@@ -345,7 +346,7 @@ function shareBar(msg, area){
     <button type="button" data-copy="${esc(full)}" class="copyShare">Copy message</button></div>`;
 }
 document.addEventListener('click', ev => {
-  const a = ev.target.closest('.sharebar a, .share a'); if (a) track('share/' + (a.href.includes('wa.me') ? 'whatsapp' : 'facebook'));
+  const a = ev.target.closest('.sharebar a, .share a'); if (a) track(a.dataset.track || ('share/' + (a.href.includes('wa.me') ? 'whatsapp' : 'facebook')));
 });
 document.addEventListener('click', async ev => {
   const b = ev.target.closest('.copyShare'); if (!b) return; track('share/copy');
@@ -467,12 +468,18 @@ $('#geoBtn').addEventListener('click', ()=>{
 function source(){
   try{ const q = new URLSearchParams(location.search); return q.get('src') || q.get('utm_source') || document.referrer.replace(/^https?:\/\/([^/]+).*/,'$1') || 'direct'; }catch(e){ return 'direct'; }
 }
-function shareLinks(){
-  const url = CONFIG.siteUrl || location.href.split('#')[0];
-  const msg = `Free fireworks forecast for pet owners: put in your postcode and see every display near you, with start times. ${url}`;
-  return `<a href="https://wa.me/?text=${encodeURIComponent(msg)}" target="_blank" rel="noopener">WhatsApp</a>
-    <a href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}" target="_blank" rel="noopener">Facebook</a>
-    <button type="button" class="ghost" id="copyBtn">Copy link</button>`;
+function giftMsg(area){
+  const base = CONFIG.siteUrl || location.href.split('#')[0].split('?')[0];
+  const url = base + '?src=gift' + (area ? '#' + area.toLowerCase() : '');
+  return `Thought this might help with your dog or cat: a free list of every public fireworks display near you, with start times, so you can get the walk done before the bangs start. ${url}`;
+}
+function shareLinks(area){
+  const base = CONFIG.siteUrl || location.href.split('#')[0].split('?')[0];
+  const url = base + '?src=gift' + (area ? '#' + area.toLowerCase() : '');
+  const msg = giftMsg(area);
+  return `<a href="https://wa.me/?text=${encodeURIComponent(msg)}" target="_blank" rel="noopener" data-track="share/gift-whatsapp">Send on WhatsApp</a>
+    <a href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}" target="_blank" rel="noopener" data-track="share/gift-facebook">Facebook</a>
+    <button type="button" class="ghost" id="copyBtn">Copy message</button>`;
 }
 $('#sf').addEventListener('submit', async e=>{
   e.preventDefault();
@@ -508,8 +515,8 @@ $('#sf').addEventListener('submit', async e=>{
   track('signup/' + (source() || 'direct'));
   $('#signupForm').style.display = 'none';
   $('#signupDone').style.display = 'block';
-  $('#shareBox').innerHTML = shareLinks();
-  $('#copyBtn').addEventListener('click', async ()=>{ try{ await navigator.clipboard.writeText(CONFIG.siteUrl || location.href.split('#')[0]); $('#copyBtn').textContent='Copied'; }catch(e){ $('#copyBtn').textContent=CONFIG.siteUrl||location.href.split('#')[0]; } });
+  $('#shareBox').innerHTML = shareLinks(p.out);
+  $('#copyBtn').addEventListener('click', async ()=>{ track('share/gift-copy'); const m = giftMsg(p.out); try{ await navigator.clipboard.writeText(m); $('#copyBtn').textContent='Copied'; }catch(e){ $('#copyBtn').textContent='Copy failed'; } });
 });
 
 /* ---------- Add display line ---------- */
