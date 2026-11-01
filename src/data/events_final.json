@@ -502,12 +502,12 @@
   "g": "17:30",
   "k": "bonfire_night",
   "s": "on",
-  "u": "https://www1.ticketebo.co.uk/rotary-club-of-woking-district/woking-fireworks-extravaganza-2026",
-  "st": "ticketing",
+  "u": "https://www.wokingfireworks.org/",
+  "st": "organiser",
   "lat": 51.30934,
   "lng": -0.55657,
   "loc": "pc",
-  "note": ""
+  "note": "Funfair and food from 17:30. Details and tickets on the organiser site."
  },
  {
   "id": 30,
@@ -719,7 +719,7 @@
   "t": "Dorney",
   "v": "Dorney School",
   "d": "2026-11-07",
-  "f": null,
+  "f": "18:00",
   "g": "17:00",
   "k": "bonfire_night",
   "s": "on",
@@ -728,7 +728,7 @@
   "lat": 51.50612,
   "lng": -0.68089,
   "loc": "pc",
-  "note": "Event runs 17:00-19:00."
+  "note": "Gates 17:00, fireworks 18:00 (confirmed by the organiser). Event ends 19:00."
  },
  {
   "id": 43,

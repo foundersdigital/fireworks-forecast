@@ -56,7 +56,7 @@ notes = {
  'Reading FC': 'Event runs 16:00-20:00.',
  'Fire.FEST': 'Event runs 17:00-20:00.',
  'Maidenhead United': 'Event runs 17:00-21:00.',
- 'Dorney': 'Event runs 17:00-19:00.',
+ 'Dorney': 'Gates 17:00, fireworks 18:00 (confirmed by the organiser). Event ends 19:00.',
  'Foxhills': 'Event runs 17:00-20:00.',
  'Rushmoor': 'Gates 16:00, last entry 19:30. Fireworks, drone and light show about 20:00, ends 21:30.',
  'Sonning CE': 'Event runs 17:30-21:00.',
@@ -89,6 +89,8 @@ for i, e in enumerate(sorted(ev, key=lambda e:(e['date'], e['fireworks_time'] or
     if clean.startswith('Ascot'): out[-1]['g'] = None
     if clean.startswith('Rushmoor'): out[-1]['f'] = '20:00'
     if clean.startswith('Wokingham Charity'): out[-1]['g'] = None
+    if clean.startswith('Dorney'): out[-1]['f'] = '18:00'; out[-1]['g'] = '17:00'
+    if clean.startswith('Woking Fireworks'): out[-1]['u'] = 'https://www.wokingfireworks.org/'; out[-1]['st'] = 'organiser'; out[-1]['note'] = 'Funfair and food from 17:30. Details and tickets on the organiser site.'
 json.dump(out, open('/home/claude/data/events_final.json','w'), indent=1)
 print(len(out), 'events')
 for o in out:
