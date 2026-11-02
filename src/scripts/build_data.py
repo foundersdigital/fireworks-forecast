@@ -52,7 +52,7 @@ notes = {
  'Kempton': 'Time from the organiser page; check nearer the day.',
  'Lambourn': 'Venue and times not yet published.',
  'Marlow Bottom': 'Fireworks between 19:00 and 20:00.',
- 'Flackwell': 'Bonfire lit about 18:45, fireworks shortly after.',
+ 'Flackwell': 'Bonfire 18:45. Quieter display for younger children 19:15-19:25, louder display 19:45-20:00 (organiser\'s estimates).',
  'Reading FC': 'Event runs 16:00-20:00.',
  'Fire.FEST': 'Event runs 17:00-20:00.',
  'Maidenhead United': 'Event runs 17:00-21:00.',
@@ -89,6 +89,7 @@ for i, e in enumerate(sorted(ev, key=lambda e:(e['date'], e['fireworks_time'] or
     if clean.startswith('Ascot'): out[-1]['g'] = None
     if clean.startswith('Rushmoor'): out[-1]['f'] = '20:00'
     if clean.startswith('Wokingham Charity'): out[-1]['g'] = None
+    if clean.startswith('Flackwell'): out[-1]['f'] = '19:15'
     if clean.startswith('Dorney'): out[-1]['f'] = '18:00'; out[-1]['g'] = '17:00'
     if clean.startswith('Woking Fireworks'): out[-1]['u'] = 'https://www.wokingfireworks.org/'; out[-1]['st'] = 'organiser'; out[-1]['note'] = 'Funfair and food from 17:30. Details and tickets on the organiser site.'
 json.dump(out, open('/home/claude/data/events_final.json','w'), indent=1)
