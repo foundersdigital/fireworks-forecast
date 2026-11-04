@@ -375,6 +375,8 @@ function render(){
   const near = all.filter(e=>e.mi<=radius).sort((a,b)=>a.d.localeCompare(b.d)||(a.f||'99').localeCompare(b.f||'99')||a.mi-b.mi);
   const nearest = all.reduce((m,e)=>Math.min(m,e.mi), Infinity);
   $('#results').style.display='block';
+  // Show the signup straight after tonight's answer, not below the full list
+  { const sec=$('#signupSec'), res=$('#results'); if (sec.parentNode!==res){ res.insertBefore(sec, res.children[1]); } }
   $('#where').innerHTML = `Displays within <b>${radius} miles</b> of <b>${esc(here.label)}</b>.`;
 
   // Not covered
