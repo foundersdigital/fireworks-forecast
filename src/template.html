@@ -3,124 +3,158 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Fireworks Forecast</title>
-<meta name="description" content="Every public fireworks display near you in Berkshire and nearby, with start times, so you can get your dog or cat settled before the first bang. Free.">
-<meta property="og:title" content="Fireworks Forecast: know when the bangs are coming">
-<meta property="og:description" content="Put in your postcode and see every public fireworks display near you, with start times. Made for dog and cat owners.">
-<meta name="theme-color" content="#0d1424">
+<title>Fireworks Forecast: a calm night in for your dog or cat</title>
+<meta name="description" content="See when the fireworks start near you, so the walk is done and the curtains are drawn before the first bang. Every public display in Berkshire and nearby, with start times. Free.">
+<meta property="og:title" content="A calm night in for your dog or cat">
+<meta property="og:description" content="Put in your postcode and see when the fireworks start near you. Made for people whose pets hate the bangs.">
+<meta name="theme-color" content="#eaf0ea">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Fraunces:opsz,wght,SOFT@9..144,500..700,100&display=swap" rel="stylesheet">
 <style>
 :root{
-  --ink:#0d1424; --ink2:#141d33; --card:#18223b; --line:#26324f;
-  --text:#ece8df; --muted:#a2abbd; --dim:#7a849a;
-  --ember:#ffb547; --ember2:#ff8a3d; --coral:#ff6f5b; --sage:#8fd6b8; --sky:#9cc3ff;
-  --radius:16px;
+  --mist:#eaf0ea; --paper:#fbfcf8; --pine:#1d2b28; --moss:#56695f; --line:#d3ddd3;
+  --night:#22304f; --lamp:#f2b44c; --lamp2:#d9902a; --glow:#fff4dc; --sage:#cfe0d3; --rose:#c2564a;
+  --serif:"Fraunces",Georgia,serif; --sans:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif;
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--ink);color:var(--text);font:16px/1.55 "DM Sans",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
-  background-image:
-    radial-gradient(1px 1px at 12% 8%,#fff8 50%,transparent 51%),
-    radial-gradient(1px 1px at 72% 4%,#fff6 50%,transparent 51%),
-    radial-gradient(1.5px 1.5px at 88% 14%,#fff9 50%,transparent 51%),
-    radial-gradient(1px 1px at 35% 18%,#fff5 50%,transparent 51%),
-    radial-gradient(1px 1px at 55% 11%,#fff7 50%,transparent 51%),
-    radial-gradient(900px 420px at 80% -120px,#2a2550 0%,transparent 70%),
-    radial-gradient(700px 380px at -10% -80px,#1b2d4d 0%,transparent 70%);
-  background-repeat:no-repeat;}
-a{color:var(--ember)}
-.wrap{max-width:760px;margin:0 auto;padding:0 18px}
-header.top{display:flex;align-items:center;gap:10px;padding:18px 0 4px}
-.brand{font-family:Fraunces,Georgia,serif;font-weight:700;font-size:19px;letter-spacing:.2px}
-.brand small{display:block;font:500 12px/1.2 "DM Sans",sans-serif;color:var(--muted);letter-spacing:.3px}
-.hero{padding:26px 0 8px}
-h1{font-family:Fraunces,Georgia,serif;font-weight:700;font-size:clamp(34px,8vw,54px);line-height:1.04;margin:0 0 14px;letter-spacing:-.5px}
-h1 em{font-style:normal;color:var(--ember)}
-.lede{color:var(--muted);font-size:17.5px;max-width:560px;margin:0 0 22px}
-.search{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px;box-shadow:0 20px 50px -30px #000}
-.search label{display:block;font-weight:700;font-size:14px;margin-bottom:8px}
+body{margin:0;background:var(--mist);color:var(--pine);font:17px/1.6 var(--sans)}
+h1,h2,h3,h4,.brand{font-family:var(--serif);font-variation-settings:"SOFT" 100;font-weight:650;letter-spacing:-.01em}
+a{color:var(--pine);text-decoration-color:var(--lamp2);text-underline-offset:3px}
+:focus-visible{outline:3px solid var(--lamp2);outline-offset:2px}
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+.narrow{max-width:680px}
+
+/* Header */
+header.top{display:flex;align-items:center;gap:10px;padding:16px 0 10px}
+.brand{font-size:20px;line-height:1.1}
+.brand small{display:block;font:400 13px/1.3 var(--sans);color:var(--moss);letter-spacing:0;margin-top:2px}
+
+/* Hero */
+.hero{display:grid;grid-template-columns:1fr;gap:6px;padding:4px 0 10px}
+.scene{border-radius:22px;overflow:hidden;line-height:0;box-shadow:0 18px 40px -28px #1d2b2866}
+.scene svg{width:100%;height:auto;display:block}
+h1{font-size:clamp(34px,8.6vw,58px);line-height:1.02;margin:18px 0 12px}
+.lede{font-size:18.5px;color:#34443f;max-width:34em;margin:0 0 20px}
+.search{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:16px}
+.search label{display:block;font-weight:700;font-size:15px;margin-bottom:8px}
 .row{display:flex;gap:10px;flex-wrap:wrap}
-input[type=text],input[type=email]{flex:1 1 200px;min-width:0;background:#0f1729;border:1px solid var(--line);color:var(--text);border-radius:12px;padding:14px 14px;font:500 17px "DM Sans",sans-serif;outline:none;text-transform:none}
-input:focus{border-color:var(--ember)}
-#pc{text-transform:uppercase}
+input[type=text],input[type=email]{flex:1 1 200px;min-width:0;background:#fff;border:1.5px solid #c3cfc4;color:var(--pine);border-radius:12px;padding:13px 14px;font:400 17px var(--sans);outline:none}
+input:focus{border-color:var(--lamp2);box-shadow:0 0 0 3px #f2b44c40}
+#pc,#sPc{text-transform:uppercase}
 #pc::placeholder,#sPc::placeholder{text-transform:none}
-button,.btn{appearance:none;border:0;border-radius:12px;padding:14px 18px;font:700 16px "DM Sans",sans-serif;cursor:pointer;background:linear-gradient(180deg,var(--ember),var(--ember2));color:#1d1206;white-space:nowrap}
-button:hover{filter:brightness(1.06)}
-button.ghost{background:transparent;color:var(--text);border:1px solid var(--line);font-weight:500;padding:10px 14px;font-size:14px}
-.chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px;align-items:center;color:var(--muted);font-size:14px}
-.chip{border:1px solid var(--line);background:transparent;color:var(--text);border-radius:999px;padding:6px 12px;font:500 14px "DM Sans",sans-serif;cursor:pointer}
-.chip[aria-pressed=true]{background:var(--ember);color:#1d1206;border-color:var(--ember);font-weight:700}
-.hint{color:var(--dim);font-size:13px;margin-top:10px}
-.err{color:var(--coral);font-size:14px;margin-top:10px;display:none}
-.stats{display:flex;gap:18px;flex-wrap:wrap;margin:16px 2px 0;color:var(--muted);font-size:14px}
-.stats b{color:var(--text);font-size:16px}
-section{margin:30px 0}
-h2{font-family:Fraunces,Georgia,serif;font-size:25px;line-height:1.15;margin:0 0 12px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px}
+button,.btn{appearance:none;border:0;border-radius:12px;padding:14px 18px;font:700 16.5px var(--sans);cursor:pointer;background:var(--lamp);color:#2a1d07;white-space:nowrap;text-decoration:none;display:inline-block}
+button:hover,.btn:hover{background:#f5c062}
+button.ghost{background:transparent;color:var(--pine);border:1.5px solid #c3cfc4;font-weight:400;padding:9px 13px;font-size:15px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px;align-items:center;color:var(--moss);font-size:15px}
+.chip{border:1.5px solid #c3cfc4;background:#fff;color:var(--pine);border-radius:999px;padding:6px 12px;font:400 15px var(--sans);cursor:pointer}
+.chip[aria-pressed=true]{background:var(--pine);color:#fff;border-color:var(--pine);font-weight:700}
+.hint{color:var(--moss);font-size:14.5px;margin-top:10px}
+.err{color:var(--rose);font-size:15px;margin-top:10px;display:none}
+.stats{color:var(--moss);font-size:15px;margin:14px 2px 0}
+.stats b{color:var(--pine)}
+
+section{margin:34px 0}
+h2{font-size:28px;line-height:1.12;margin:0 0 12px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:20px}
 #results{display:none}
-.where{color:var(--muted);font-size:14px;margin:0 0 12px}
-.tonight{position:relative;overflow:hidden;border-radius:var(--radius);padding:20px;border:1px solid #6b4a1f;
-  background:radial-gradient(500px 220px at 100% 0%,#5a3a12 0%,transparent 70%),linear-gradient(180deg,#22203a,#1a1f36)}
-.tonight.calm{border-color:#2f5b4c;background:radial-gradient(500px 220px at 100% 0%,#1d4a3c 0%,transparent 70%),linear-gradient(180deg,#17283a,#161f35)}
-.tag{display:inline-block;font:700 12px "DM Sans",sans-serif;letter-spacing:.6px;text-transform:uppercase;padding:4px 9px;border-radius:999px;background:#ffb54722;color:var(--ember)}
-.calm .tag{background:#8fd6b822;color:var(--sage)}
-.tonight h3{font-family:Fraunces,Georgia,serif;font-size:26px;line-height:1.15;margin:10px 0 6px}
-.tonight p{margin:6px 0;color:#d9d4ca}
+.where{color:var(--moss);font-size:15.5px;margin:0 0 12px}
+
+/* Tonight */
+.tonight{border-radius:20px;padding:20px;background:var(--glow);border:1px solid #efd39b}
+.tonight.calm{background:#e1ece3;border-color:#bfd3c3}
+.tag{font-weight:700;font-size:15px;color:#8a5a12}
+.calm .tag{color:#3f6150}
+.tonight h3{font-size:27px;line-height:1.12;margin:6px 0 6px}
+.tonight p{margin:6px 0;color:#2c3a36}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
-.mini{background:#0f172999;border:1px solid var(--line);border-radius:12px;padding:10px 12px}
-.mini span{display:block;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.5px}
-.mini b{font-size:20px}
+.mini{background:#fffdf7;border:1px solid #efd9ac;border-radius:14px;padding:10px 12px}
+.calm .mini{border-color:#c7d8ca}
+.mini span{display:block;color:var(--moss);font-size:14px}
+.mini b{font-size:22px}
 .radarbox{display:flex;gap:16px;align-items:center;margin-top:14px;flex-wrap:wrap}
 .radarbox svg{flex:0 0 auto}
-.radarbox .legend{color:var(--muted);font-size:13px;flex:1 1 180px}
+.radarbox .legend{color:var(--moss);font-size:14.5px;flex:1 1 180px}
+
+/* Night list */
 .night{margin-top:22px}
-.nighthead{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:8px;margin-bottom:6px}
-.nighthead h4{margin:0;font-family:Fraunces,Georgia,serif;font-size:20px}
-.nighthead .meta{color:var(--muted);font-size:13px}
-.ev{display:grid;grid-template-columns:78px 1fr;gap:12px;padding:12px 0;border-bottom:1px dashed #26324f88}
+.nighthead{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;border-bottom:1.5px solid var(--line);padding-bottom:8px;margin-bottom:4px}
+.nighthead h4{margin:0;font-size:21px}
+.nighthead .meta{color:var(--moss);font-size:14.5px}
+.ev{display:grid;grid-template-columns:80px 1fr;gap:12px;padding:12px 0;border-bottom:1px solid #e0e7e0}
 .ev:last-child{border-bottom:0}
-.time{font:700 20px/1.1 "DM Sans",sans-serif;color:var(--ember)}
-.time small{display:block;font:500 12px "DM Sans",sans-serif;color:var(--muted);margin-top:3px}
-.time.unk{font-size:14px;color:var(--text)}
+.time{font:700 21px/1.1 var(--sans);color:#8a5a12}
+.time small{display:block;font:400 13px var(--sans);color:var(--moss);margin-top:3px}
+.time.unk{font-size:15px;color:var(--pine)}
 .ev .name{font-weight:700}
-.ev .sub{color:var(--muted);font-size:14px}
-.ev .note{color:#cfc8b8;font-size:13.5px;margin-top:3px}
-.ev a.src{font-size:13px;color:var(--sky);text-decoration:none}
-.ev a.src:hover{text-decoration:underline}
-.dist{display:inline-block;font-size:12px;font-weight:700;color:#1d1206;background:var(--ember);border-radius:6px;padding:1px 6px;margin-right:6px}
-.dist.far{background:#2b3757;color:var(--text)}
-.empty{color:var(--muted);font-size:14px;padding:10px 0}
+.ev .sub{color:var(--moss);font-size:15px}
+.ev .note{color:#3b4a45;font-size:14.5px;margin-top:3px}
+.ev a.src{font-size:14.5px;color:#2f5d8a}
+.dist{display:inline-block;font-size:13px;font-weight:700;color:#2a1d07;background:#f7d48f;border-radius:6px;padding:1px 6px;margin-right:6px}
+.dist.far{background:#dfe7df;color:var(--pine)}
+.empty{color:var(--moss);font-size:15px;padding:10px 0}
+
+/* Peaks */
 .peaks{display:grid;gap:8px}
-.peak{display:grid;grid-template-columns:96px 1fr;gap:12px;align-items:start;padding:10px 12px;border-radius:12px;background:#0f172999;border:1px solid var(--line)}
-.peak b{font-size:14px}
-.peak div{color:var(--muted);font-size:14px}
-.peak.past{opacity:.45}
-.signup{border-radius:var(--radius);padding:22px;background:linear-gradient(160deg,#2a2148,#1b2340 60%);border:1px solid #3b3566}
-.signup h2{margin-bottom:6px}
-.signup p{color:#cfcadf;margin:0 0 14px}
-.signup .fine{font-size:12.5px;color:var(--muted);margin-top:10px}
+.peak{display:grid;grid-template-columns:104px 1fr;gap:12px;align-items:start;padding:11px 14px;border-radius:14px;background:var(--paper);border:1px solid var(--line)}
+.peak b{font-size:15px}
+.peak div{color:var(--moss);font-size:15px}
+.peak.past{opacity:.5}
+
+/* Quiet Nights list */
+.signup{position:relative;border-radius:22px;padding:24px 22px;background:var(--night);color:#f3efe4;overflow:hidden}
+.signup>*{position:relative;z-index:1}
+.signup::before{content:"";position:absolute;z-index:0;right:-90px;top:-110px;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,#f2b44c55 0%,#f2b44c00 68%);pointer-events:none}
+.signup h2{color:#fff;margin-bottom:8px;font-size:30px}
+.signup p{color:#d8dbe4;margin:0 0 12px}
+.signup ul{list-style:none;padding:0;margin:0 0 18px;display:grid;gap:7px}
+.signup li{padding-left:28px;position:relative;color:#eef0f5}
+.signup li::before{content:"";position:absolute;left:4px;top:.55em;width:11px;height:11px;border-radius:50%;background:var(--lamp);box-shadow:0 0 0 4px #f2b44c33}
+.signup label.q{display:block;font-weight:700;font-size:15px;margin:14px 0 8px;color:#fff}
+.petchips{display:flex;gap:8px;flex-wrap:wrap}
+.petchip{border:1.5px solid #4a5a80;background:transparent;color:#fff;border-radius:999px;padding:8px 15px;font:400 16px var(--sans);cursor:pointer}
+.petchip[aria-pressed=true]{background:var(--lamp);border-color:var(--lamp);color:#2a1d07;font-weight:700}
+.signup input[type=text],.signup input[type=email]{background:#fff;border-color:#fff}
+.signup .fields{display:grid;gap:10px;margin-top:14px}
+.signup .fields .row input{flex:1 1 160px}
+.signup button[type=submit]{width:100%;margin-top:4px;font-size:17.5px;padding:15px}
+.signup .fine{font-size:14px;color:#b9bfcf;margin-top:12px}
 .done{display:none}
+.done .btn{margin:6px 0 16px}
 .share{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-.share a,.share button{font-size:14px;padding:10px 14px;border-radius:10px;text-decoration:none}
-.share a{background:#0f1729;border:1px solid var(--line);color:var(--text)}
-ol.prep{margin:0;padding-left:0;list-style:none;counter-reset:p;display:grid;gap:10px}
-ol.prep li{counter-increment:p;display:grid;grid-template-columns:30px 1fr;gap:10px}
-ol.prep li::before{content:counter(p);width:26px;height:26px;border-radius:50%;background:#ffb54722;color:var(--ember);display:grid;place-items:center;font-weight:700;font-size:13px}
-ol.prep b{display:block}
-ol.prep span{color:var(--muted);font-size:14.5px}
-footer{color:var(--dim);font-size:12.5px;padding:24px 0 40px;border-top:1px solid var(--line);margin-top:40px}
+.share a,.share button{font-size:15px;padding:10px 14px;border-radius:10px;text-decoration:none}
+.share a{background:#2f3f63;border:1px solid #4a5a80;color:#fff}
+.share button.ghost{color:#fff;border-color:#4a5a80}
+
+/* Before the bangs */
+.prep{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.prep li b{display:block}
+.prep li span{color:var(--moss);font-size:15.5px}
+.plan-cta{margin-top:16px;padding-top:14px;border-top:1px solid var(--line);font-size:15.5px}
+
+footer{color:var(--moss);font-size:14px;padding:24px 0 40px;border-top:1.5px solid var(--line);margin-top:40px}
 footer p{margin:6px 0}
-.sharebar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:12px;color:var(--muted);font-size:14px}
-.sharebar a,.sharebar button{font:500 14px "DM Sans",sans-serif;padding:9px 13px;border-radius:10px;text-decoration:none;background:#0f1729;border:1px solid var(--line);color:var(--text);cursor:pointer}
-.preview-note{display:none;margin-top:10px;font-size:13px;color:var(--ember)}
+.sharebar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:14px;color:var(--moss);font-size:15px}
+.sharebar a,.sharebar button{font:400 15px var(--sans);padding:9px 13px;border-radius:10px;text-decoration:none;background:#fff;border:1.5px solid #c3cfc4;color:var(--pine);cursor:pointer}
+.preview-note{display:none;margin-top:10px;font-size:14px;color:var(--lamp)}
+
+@media (min-width:860px){
+  .hero{grid-template-columns:1.05fr 1fr;gap:44px;align-items:center;padding:20px 0 10px}
+  .hero .scene{order:2}
+  h1{margin-top:0}
+}
 @media (max-width:520px){
-  .grid2{grid-template-columns:1fr 1fr}
-  .ev{grid-template-columns:64px 1fr}
-  .peak{grid-template-columns:82px 1fr}
-  .row button{flex:1 1 100%}
+  .ev{grid-template-columns:66px 1fr}
+  .peak{grid-template-columns:86px 1fr}
+  .search .row button{flex:1 1 100%}
   #geoBtn{margin-left:0!important}
+}
+@media (prefers-reduced-motion:no-preference){
+  .burst{animation:bloom 5.5s ease-out infinite;transform-box:fill-box;transform-origin:center}
+  .burst.b2{animation-delay:1.9s}
+  .burst.b3{animation-delay:3.6s}
+  @keyframes bloom{0%{opacity:0;transform:scale(.3)}8%{opacity:1}30%{opacity:.85;transform:scale(1)}48%,100%{opacity:0;transform:scale(1.05)}}
 }
 </style>
 <script>
@@ -134,39 +168,106 @@ footer p{margin:6px 0}
 <div class="wrap">
   <header class="top">
     <svg width="38" height="38" viewBox="0 0 40 40" aria-hidden="true">
-      <circle cx="20" cy="20" r="19" fill="#18223b" stroke="#26324f"/>
-      <path d="M24.5 9.5a11 11 0 1 0 6 18.6A9 9 0 0 1 24.5 9.5z" fill="#ece8df"/>
-      <g stroke="#ffb547" stroke-width="2" stroke-linecap="round">
-        <path d="M11 11l2 2M9 17h2.6M14 7.5l.6 2.6"/>
-      </g>
+      <circle cx="20" cy="20" r="19" fill="#22304f"/>
+      <path d="M24.5 9.5a11 11 0 1 0 6 18.6A9 9 0 0 1 24.5 9.5z" fill="#f3efe4"/>
+      <g stroke="#f2b44c" stroke-width="2" stroke-linecap="round"><path d="M11 11l2 2M9 17h2.6M14 7.5l.6 2.6"/></g>
     </svg>
-    <div class="brand">Fireworks Forecast<small>For dog and cat owners · Berkshire &amp; nearby</small></div>
+    <div class="brand">Fireworks Forecast<small>For dog and cat owners in Berkshire and nearby</small></div>
   </header>
 
   <div class="hero">
-    <h1>Know when the <em>bangs</em> are coming.</h1>
-    <p class="lede">Every public fireworks display near you, with start times. Walk the dog early, close the curtains and be home before the first bang.</p>
-
-    <form class="search" id="searchForm" autocomplete="on">
-      <label for="pc">Your postcode</label>
-      <div class="row">
-        <input id="pc" name="postcode" type="text" inputmode="text" autocomplete="postal-code" placeholder="e.g. SL6 1AB or SL6" maxlength="9" required>
-        <button type="submit">Show my forecast</button>
-      </div>
-      <div class="chips" role="group" aria-label="Distance">
-        Within
-        <button type="button" class="chip" data-r="3" aria-pressed="false">3 mi</button>
-        <button type="button" class="chip" data-r="5" aria-pressed="false">5 mi</button>
-        <button type="button" class="chip" data-r="10" aria-pressed="true">10 mi</button>
-        <button type="button" class="chip" data-r="15" aria-pressed="false">15 mi</button>
-        <button type="button" class="ghost" id="geoBtn" style="margin-left:auto">Use my location</button>
-      </div>
-      <div class="err" id="err"></div>
-      <div class="hint">Fireworks can be heard 3 to 5 miles away on a still night, further for big racecourse shows.</div>
-    </form>
-    <div class="stats" id="stats"></div>
+    <div class="scene">
+      <svg viewBox="0 0 400 250" role="img" aria-label="A dog asleep on its cushion by a lamp, with fireworks far away outside the window">
+        <defs>
+          <radialGradient id="wall" cx="0.84" cy="0.38" r="0.95">
+            <stop offset="0" stop-color="#fff0cc"/><stop offset="0.45" stop-color="#f1e2c2"/><stop offset="1" stop-color="#dccfb2"/>
+          </radialGradient>
+          <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#1b2642"/><stop offset="1" stop-color="#34476f"/>
+          </linearGradient>
+          <radialGradient id="lampglow" cx="0.5" cy="0.5" r="0.5">
+            <stop offset="0" stop-color="#ffd98a" stop-opacity=".75"/><stop offset="1" stop-color="#ffd98a" stop-opacity="0"/>
+          </radialGradient>
+          <clipPath id="win"><rect x="62" y="28" width="186" height="146" rx="8"/></clipPath>
+        </defs>
+        <rect width="400" height="250" fill="url(#wall)"/>
+        <!-- window -->
+        <rect x="62" y="28" width="186" height="146" rx="8" fill="url(#sky)"/>
+        <g clip-path="url(#win)">
+          <g fill="#fff" opacity=".7"><circle cx="84" cy="44" r="1"/><circle cx="132" cy="38" r="1.2"/><circle cx="230" cy="48" r="1"/><circle cx="170" cy="92" r="0.9"/><circle cx="98" cy="128" r="0.9"/><circle cx="222" cy="118" r="1.1"/></g>
+          <g class="burst" stroke="#f2b44c" stroke-width="2" stroke-linecap="round">
+            <path d="M112 72l0-14M112 72l10-10M112 72l14 0M112 72l10 10M112 72l0 14M112 72l-10 10M112 72l-14 0M112 72l-10-10"/>
+          </g>
+          <g class="burst b2" stroke="#f3a0a6" stroke-width="1.8" stroke-linecap="round">
+            <path d="M200 58l0-11M200 58l8-8M200 58l11 0M200 58l8 8M200 58l0 11M200 58l-8 8M200 58l-11 0M200 58l-8-8"/>
+          </g>
+          <g class="burst b3" stroke="#bfe0cf" stroke-width="1.6" stroke-linecap="round">
+            <path d="M168 112l0-8M168 112l6-6M168 112l8 0M168 112l6 6M168 112l0 8M168 112l-6 6M168 112l-8 0M168 112l-6-6"/>
+          </g>
+          <!-- distant rooftops -->
+          <path d="M62 174v-22l18-12 18 12v-6h22v-10l14-9 14 9v16h28l16-12 16 12v-8h24l16-10v40z" fill="#16203a"/>
+        </g>
+        <!-- window frame -->
+        <rect x="62" y="28" width="186" height="146" rx="8" fill="none" stroke="#fbf6ea" stroke-width="7"/>
+        <path d="M155 28v146M62 101h186" stroke="#fbf6ea" stroke-width="5"/>
+        <rect x="50" y="174" width="210" height="9" rx="3" fill="#fbf6ea"/>
+        <!-- curtains -->
+        <path d="M36 18h34c-4 40 6 70 2 104-2 20-10 38-4 60H38c-6-46 4-104-2-164z" fill="#9db8a6"/>
+        <path d="M48 26c2 40-2 90 2 150M60 24c-2 50 4 94 0 150" stroke="#87a492" stroke-width="2" fill="none"/>
+        <path d="M240 18h34c-6 60 4 118-2 164h-30c6-22-2-40-4-60-4-34 6-64 2-104z" fill="#9db8a6"/>
+        <path d="M262 26c-2 40 2 90-2 150M250 24c2 50-4 94 0 150" stroke="#87a492" stroke-width="2" fill="none"/>
+        <rect x="30" y="12" width="252" height="7" rx="3" fill="#7b917f"/>
+        <!-- floor -->
+        <rect y="214" width="400" height="36" fill="#cbbb98"/>
+        <path d="M0 214h400" stroke="#b9a983" stroke-width="2"/>
+        <!-- lamp -->
+        <circle cx="340" cy="92" r="92" fill="url(#lampglow)"/>
+        <path d="M316 64h48l12 34h-72z" fill="#f2b44c"/>
+        <path d="M316 64h48l3 8h-54z" fill="#f7c873"/>
+        <path d="M340 98v114" stroke="#5d6a62" stroke-width="4"/>
+        <ellipse cx="340" cy="214" rx="20" ry="5" fill="#5d6a62"/>
+        <!-- cushion -->
+        <ellipse cx="186" cy="222" rx="80" ry="17" fill="#5f806e"/>
+        <ellipse cx="186" cy="215" rx="74" ry="14" fill="#7a9b88"/>
+        <!-- sleeping dog -->
+        <path d="M232 206c10 4 14-4 8-10" stroke="#b97d4e" stroke-width="7" stroke-linecap="round" fill="none"/>
+        <ellipse cx="192" cy="199" rx="46" ry="19" fill="#c98f5f"/>
+        <ellipse cx="216" cy="196" rx="22" ry="17" fill="#c08452"/>
+        <ellipse cx="190" cy="205" rx="30" ry="9" fill="#d6a274" opacity=".55"/>
+        <ellipse cx="141" cy="213" rx="12" ry="5" fill="#e6c09a"/>
+        <ellipse cx="157" cy="214" rx="11" ry="4.5" fill="#e6c09a"/>
+        <circle cx="152" cy="199" r="15" fill="#c98f5f"/>
+        <ellipse cx="137" cy="205" rx="10" ry="7" fill="#d9a77a"/>
+        <ellipse cx="129" cy="203" rx="3.2" ry="2.6" fill="#3b2a20"/>
+        <path d="M150 188c8-6 18-2 18 8 0 9-4 16-9 18-6-4-12-16-9-26z" fill="#8f5c36"/>
+        <path d="M141 196c3 2 6 2 9 0" stroke="#3b2a20" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+      </svg>
+    </div>
+    <div>
+      <h1>A calm night in for your dog or cat.</h1>
+      <p class="lede">See when the fireworks start near you, so the walk is done and the curtains are drawn before the first bang.</p>
+      <form class="search" id="searchForm" autocomplete="on">
+        <label for="pc">Your postcode</label>
+        <div class="row">
+          <input id="pc" name="postcode" type="text" inputmode="text" autocomplete="postal-code" placeholder="e.g. SL6 1AB or SL6" maxlength="9" required>
+          <button type="submit">Show times near me</button>
+        </div>
+        <div class="chips" role="group" aria-label="Distance">
+          Within
+          <button type="button" class="chip" data-r="3" aria-pressed="false">3 mi</button>
+          <button type="button" class="chip" data-r="5" aria-pressed="false">5 mi</button>
+          <button type="button" class="chip" data-r="10" aria-pressed="true">10 mi</button>
+          <button type="button" class="chip" data-r="15" aria-pressed="false">15 mi</button>
+          <button type="button" class="ghost" id="geoBtn" style="margin-left:auto">Use my location</button>
+        </div>
+        <div class="err" id="err"></div>
+        <div class="hint">On a still night you can hear fireworks 3 to 5 miles away, and further for the big racecourse shows.</div>
+      </form>
+      <p class="stats" id="stats"></p>
+    </div>
   </div>
 
+  <div class="narrow">
   <div id="results">
     <section>
       <p class="where" id="where"></p>
@@ -181,21 +282,39 @@ footer p{margin:6px 0}
   <section id="signupSec">
     <div class="signup">
       <div id="signupForm">
-        <h2>Get a heads-up on display days</h2>
-        <p>One short email on the morning of any display near you, plus a reminder before New Year's Eve. Free.</p>
-        <form id="sf" class="row" novalidate>
-          <input id="sEmail" type="email" name="email" autocomplete="email" placeholder="Your email" required>
-          <input id="sPc" type="text" name="postcode" autocomplete="postal-code" placeholder="Postcode" style="flex:0 1 130px;text-transform:uppercase" maxlength="9" required>
-          <button type="submit" id="sBtn">Send me alerts</button>
+        <h2>Join the Quiet Nights list</h2>
+        <p>For people whose dog or cat hates fireworks. Free, and we only email about fireworks.</p>
+        <ul>
+          <li>Your Quiet Night plan, the moment you join</li>
+          <li>A heads-up on the morning of any display near you</li>
+          <li>A reminder before New Year's Eve, the next big night</li>
+        </ul>
+        <form id="sf" novalidate>
+          <label class="q" id="petQ">Who are you looking after?</label>
+          <div class="petchips" role="group" aria-labelledby="petQ">
+            <button type="button" class="petchip" data-pet="dog" aria-pressed="false">A dog</button>
+            <button type="button" class="petchip" data-pet="cat" aria-pressed="false">A cat</button>
+            <button type="button" class="petchip" data-pet="dog and cat" aria-pressed="false">Both</button>
+            <button type="button" class="petchip" data-pet="other" aria-pressed="false">Another pet</button>
+          </div>
+          <div class="fields">
+            <input id="sPet" type="text" name="petname" autocomplete="off" placeholder="Their name (optional)" maxlength="40">
+            <div class="row">
+              <input id="sEmail" type="email" name="email" autocomplete="email" placeholder="Your email" required>
+              <input id="sPc" type="text" name="postcode" autocomplete="postal-code" placeholder="Postcode" style="flex:0 1 130px" maxlength="9" required>
+            </div>
+            <button type="submit" id="sBtn">Join the list</button>
+          </div>
         </form>
         <div class="err" id="sErr"></div>
-        <div class="fine">Fireworks alerts only. Unsubscribe any time. Run by a local dog owner, not an ad network.</div>
+        <div class="fine">Unsubscribe any time by replying STOP. Run by a local dog owner, not an ad network. Several organisers have confirmed their own times with us.</div>
         <div class="preview-note" id="previewNote">Preview: signups are not connected yet, so nothing was saved.</div>
       </div>
       <div class="done" id="signupDone">
-        <h2>You're on the list.</h2>
-        <p>We'll email you on the morning of any display near you.</p>
-        <p><b>Know someone whose dog or cat hates fireworks?</b> Send them the list for your area. It's free, and it takes them ten seconds to check their own postcode.</p>
+        <h2 id="doneHead">You're on the list.</h2>
+        <p id="doneMsg">We'll email you on the morning of any display near you, and again before New Year's Eve.</p>
+        <a class="btn" id="planLink" href="plan.html?src=signup">Open your Quiet Night plan</a>
+        <p><b>Know someone whose dog or cat hates fireworks?</b> Send them the list for your area. It takes them ten seconds to check their own postcode.</p>
         <div class="share" id="shareBox"></div>
       </div>
     </div>
@@ -210,32 +329,33 @@ footer p{margin:6px 0}
   <section>
     <h2>Before the bangs</h2>
     <div class="card">
-      <ol class="prep">
-        <li><div><b>Walk early</b><span>Do the evening walk before dusk and keep them on the lead. Frightened dogs bolt.</span></div></li>
-        <li><div><b>Make a den</b><span>A covered crate or quiet corner with their own bedding gives them somewhere to hide.</span></div></li>
-        <li><div><b>Shut out the night</b><span>Close windows and curtains, and put the TV or radio on to soften the bangs.</span></div></li>
-        <li><div><b>Check the microchip</b><span>Make sure their microchip details and ID tag are up to date before the season starts.</span></div></li>
-        <li><div><b>Stay calm and normal</b><span>Let them hide if they want to. Keep cats indoors and give them a litter tray.</span></div></li>
-        <li><div><b>Very scared? Call your vet now</b><span>There's still time to get help in place before New Year's Eve.</span></div></li>
-      </ol>
-      <p class="hint">More advice from the <a href="https://www.rspca.org.uk/getinvolved/campaign/fireworks" target="_blank" rel="noopener">RSPCA</a>.</p>
+      <ul class="prep">
+        <li><b>Walk early</b><span>Do the evening walk before dusk and keep them on the lead. Frightened dogs bolt.</span></li>
+        <li><b>Make a den</b><span>A covered crate or quiet corner with their own bedding gives them somewhere to hide.</span></li>
+        <li><b>Shut out the night</b><span>Close windows and curtains, and put the TV or radio on to soften the bangs.</span></li>
+        <li><b>Keep cats in</b><span>Bring them in before dark, close the cat flap and put out a litter tray.</span></li>
+        <li><b>Comfort them if they come to you</b><span>It's fine to reassure a scared pet. If they'd rather hide, let them.</span></li>
+        <li><b>Very scared? Call your vet now</b><span>There's still time to get help in place before New Year's Eve.</span></li>
+      </ul>
+      <p class="plan-cta">The full Quiet Night plan, for the days before, the night itself and afterwards, comes free when you <a href="#signupSec">join the list</a>. Advice from the <a href="https://www.rspca.org.uk/getinvolved/campaign/fireworks" target="_blank" rel="noopener">RSPCA</a> and <a href="https://www.dogstrust.org.uk/fireworks" target="_blank" rel="noopener">Dogs Trust</a>.</p>
     </div>
   </section>
 
   <section>
     <div class="card">
-      <h2 style="font-size:21px">Know a display we've missed?</h2>
+      <h2 style="font-size:22px">Know a display we've missed?</h2>
       <p class="where" style="margin:0" id="addLine">Tell us the name, place, date and time and we'll add it.</p>
     </div>
   </section>
 
   <footer>
-    <p><b>How this works.</b> Listings are compiled by hand from organiser, council and ticketing pages. Last checked <span id="checked"></span>. Times can change, so check the organiser's page (the "Source" link) before you plan around it. Not affiliated with any organiser.</p>
+    <p><b>How this works.</b> Listings are compiled by hand from organiser, council and ticketing pages and rechecked before each display night. Last updated <span id="checked"></span>. Times can change, so check the organiser's page before you plan around it. Not affiliated with any organiser.</p>
     <p>Distances are straight-line from the middle of your postcode area. Your search stays in your browser.</p>
-    <p id="privacy"><b>Privacy.</b> If you sign up, your email and postcode are used only to send fireworks alerts for your area. They are never shared or sold. Reply STOP to any email to unsubscribe. Visits are counted with GoatCounter, which uses no cookies and does not track you across sites.</p>
+    <p id="privacy"><b>Privacy.</b> If you join the list, your email, postcode and (if you give it) your pet's name are used only to send fireworks emails for your area. They are never shared or sold. Reply STOP to any email to unsubscribe. Visits are counted with GoatCounter, which uses no cookies and does not track you across sites.</p>
     <p>Contains OS data © Crown copyright and database right 2026. Contains Royal Mail data © Royal Mail copyright and database right 2026. Source: Office for National Statistics, licensed under the Open Government Licence v3.0.</p>
     <p>Made in Maidenhead.</p>
   </footer>
+  </div>
 </div>
 
 <script>
@@ -309,7 +429,7 @@ function renderStats(){
   const t = today();
   const upcoming = EVENTS.filter(e=>e.d>=t && e.s==='on');
   const towns = new Set(upcoming.map(e=>e.t.split(' (')[0]));
-  $('#stats').innerHTML = `<span><b>${upcoming.length}</b> displays listed</span><span><b>${towns.size}</b> towns and villages</span><span>Checked <b>${esc(nice(CHECKED,{weekday:undefined}))}</b></span>`;
+  $('#stats').innerHTML = `<b>${upcoming.length}</b> public displays in <b>${towns.size}</b> towns and villages, updated ${esc(nice(CHECKED,{weekday:undefined}))}. Free, run by a local dog owner.`;
   $('#checked').textContent = nice(CHECKED,{weekday:'long'});
 }
 const PEAKS = [
@@ -328,11 +448,11 @@ function renderPeaks(){
 /* ---------- Radar ---------- */
 function radar(list, rmax){
   const S=150, c=S/2, rr=c-10;
-  const rings=[1/3,2/3,1].map(f=>`<circle cx="${c}" cy="${c}" r="${rr*f}" fill="none" stroke="#2a3655" stroke-dasharray="${f<1?'2 4':'0'}"/>`).join('');
-  const dots=list.map(e=>{const r=Math.min(1,e.mi/rmax)*rr, a=(e.br-90)*D2R; const x=c+r*Math.cos(a), y=c+r*Math.sin(a); return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="5" fill="#ffb547" stroke="#1d1206" stroke-width="1.5"><title>${esc(e.n)}</title></circle>`;}).join('');
+  const rings=[1/3,2/3,1].map(f=>`<circle cx="${c}" cy="${c}" r="${rr*f}" fill="none" stroke="#c3d0c5" stroke-dasharray="${f<1?'2 4':'0'}"/>`).join('');
+  const dots=list.map(e=>{const r=Math.min(1,e.mi/rmax)*rr, a=(e.br-90)*D2R; const x=c+r*Math.cos(a), y=c+r*Math.sin(a); return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="5" fill="#f2b44c" stroke="#8a5a12" stroke-width="1.5"><title>${esc(e.n)}</title></circle>`;}).join('');
   return `<svg width="${S}" height="${S}" viewBox="0 0 ${S} ${S}" role="img" aria-label="Displays around you">${rings}
-    <text x="${c}" y="12" fill="#7a849a" font-size="10" text-anchor="middle">N</text>
-    <circle cx="${c}" cy="${c}" r="5" fill="#8fd6b8"/>${dots}</svg>`;
+    <text x="${c}" y="12" fill="#56695f" font-size="10" text-anchor="middle">N</text>
+    <circle cx="${c}" cy="${c}" r="5.5" fill="#1d2b28"/>${dots}</svg>`;
 }
 
 /* ---------- Share bar ---------- */
@@ -365,7 +485,7 @@ function evRow(e){
     <div class="name">${esc(e.n)}</div>
     <div class="sub"><span class="dist${far}">${fmtMi(e.mi)} mi ${compass(e.br)}</span>${esc(e.v)}${e.t && !e.v.includes(e.t.split(' (')[0])?', '+esc(e.t):''}</div>
     ${e.note?`<div class="note">${esc(e.note)}</div>`:''}
-    <a class="src" href="${esc(e.u)}" target="_blank" rel="noopener">${src} ↗</a>
+    <a class="src" href="${esc(e.u)}" target="_blank" rel="noopener">${src}</a>
   </div></div>`;
 }
 function render(){
@@ -381,7 +501,7 @@ function render(){
 
   // Not covered
   if (nearest > 25){
-    $('#tonight').innerHTML = `<div class="tonight calm"><span class="tag">Not covered yet</span><h3>We don't cover ${esc(here.label)} yet.</h3><p>Fireworks Forecast started in Berkshire and the towns around it. Leave your email below and we'll tell you when your area is added, plus a heads-up before New Year's Eve.</p></div>`;
+    $('#tonight').innerHTML = `<div class="tonight calm"><span class="tag">Not covered yet</span><h3>We don't cover ${esc(here.label)} yet.</h3><p>Fireworks Forecast started in Berkshire and the towns around it. Join the Quiet Nights list below and we'll tell you when your area is added, plus send a reminder before New Year's Eve.</p></div>`;
     $('#nights').innerHTML = '';
     $('#sPc').value = $('#sPc').value || here.code || '';
     return;
@@ -397,19 +517,19 @@ function render(){
     const known = todays.filter(e=>e.f).map(e=>e.f).sort();
     const first = known[0] || 'after dark';
     const closest = todays.reduce((a,b)=>a.mi<b.mi?a:b);
-    html = `<div class="tonight"><span class="tag">Tonight · ${esc(nice(t))}</span>
+    html = `<div class="tonight"><span class="tag">Tonight, ${esc(nice(t,{weekday:'long'}))}</span>
       <h3>${todays.length} display${todays.length>1?'s':''} within ${radius} miles tonight.</h3>
       <p>Closest: ${esc(closest.n)}, ${fmtMi(closest.mi)} miles ${compass(closest.br)}.</p>
       <div class="grid2">
         <div class="mini"><span>Walk by</span><b>${walkBy}</b></div>
         <div class="mini"><span>First bangs</span><b>${esc(first==='after dark'?'After dark':first)}</b></div>
       </div>
-      <div class="radarbox">${radar(todays, radius)}<div class="legend">You're the green dot. Orange dots are tonight's displays, outer ring = ${radius} miles. Sunset is ${ssHM}.</div></div>
+      <div class="radarbox">${radar(todays, radius)}<div class="legend">You're the dark dot. Amber dots are tonight's displays, outer ring = ${radius} miles. Sunset is ${ssHM}.</div></div>
     </div>`;
   } else {
     const next = near[0];
     const peakToday = PEAKS.find(p=>p.d===t);
-    html = `<div class="tonight calm"><span class="tag">Tonight · ${esc(nice(t))}</span>
+    html = `<div class="tonight calm"><span class="tag">Tonight, ${esc(nice(t,{weekday:'long'}))}</span>
       <h3>No public displays listed within ${radius} miles tonight.</h3>
       <p>${peakToday?`It's ${esc(peakToday.t)}, so garden fireworks are still likely. `:'Garden fireworks are still possible. '}Sunset is ${ssHM}; walk by ${walkBy} to be safe.</p>
       ${next?`<p><b>Next display near you:</b> ${esc(nice(next.d))}${next.f?' at '+esc(next.f):''}, ${esc(next.n)} (${fmtMi(next.mi)} mi ${compass(next.br)}).</p>`:`<p>No upcoming public displays listed within ${radius} miles. Try a wider distance.</p>`}
@@ -433,7 +553,7 @@ function render(){
     const known = list.filter(e=>e.f).map(e=>e.f).sort();
     const s = londonHM(sunset(d, here.lat, here.lng));
     return `<div class="night"><div class="nighthead"><h4>${esc(nice(d,{weekday:'long'}))}</h4>
-      <span class="meta">${list.length} display${list.length>1?'s':''} · sunset ${s}${known.length?` · first bangs ${known[0]}`:''}</span></div>
+      <span class="meta">${list.length} display${list.length>1?'s':''}, sunset ${s}${known.length?`, first bangs ${known[0]}`:''}</span></div>
       ${list.map(evRow).join('')}</div>`;
   }).join('');
   if (!$('#sPc').value) $('#sPc').value = here.code || '';
@@ -467,6 +587,11 @@ $('#geoBtn').addEventListener('click', ()=>{
 });
 
 /* ---------- Signup ---------- */
+let pet = '';
+document.querySelectorAll('.petchip').forEach(b=>b.addEventListener('click', ()=>{
+  pet = (pet===b.dataset.pet) ? '' : b.dataset.pet;
+  document.querySelectorAll('.petchip').forEach(x=>x.setAttribute('aria-pressed', String(x.dataset.pet===pet)));
+}));
 function source(){
   try{ const q = new URLSearchParams(location.search); return q.get('src') || q.get('utm_source') || document.referrer.replace(/^https?:\/\/([^/]+).*/,'$1') || 'direct'; }catch(e){ return 'direct'; }
 }
@@ -491,14 +616,16 @@ $('#sf').addEventListener('submit', async e=>{
   const p = outward(pc);
   if (!p){ err.textContent='Please add your postcode (the first part is fine, e.g. SL6) so we only alert you about nearby displays.'; err.style.display='block'; return; }
   err.style.display='none';
-  $('#sBtn').disabled = true; $('#sBtn').textContent = 'Signing you up...';
+  $('#sBtn').disabled = true; $('#sBtn').textContent = 'Joining...';
   const s = CONFIG.signup || {};
   let ok = true;
   try{
     if (s.type === 'googleform'){
       const fd = new FormData();
       fd.append(s.emailField, email); fd.append(s.postcodeField, p.full || p.out);
-      if (s.sourceField) fd.append(s.sourceField, source());
+      const petName = ($('#sPet').value||'').trim().slice(0,40);
+      const petBits = [pet, petName].filter(Boolean).join(': ');
+      if (s.sourceField) fd.append(s.sourceField, source() + (petBits ? ' | ' + petBits : ''));
       await fetch(s.action, {method:'POST', mode:'no-cors', body:fd});
     } else if (s.type === 'buttondown'){
       const fd = new FormData(); fd.append('email', email); fd.append('metadata__postcode', p.full || p.out); fd.append('metadata__district', p.out); fd.append('tag', p.out); fd.append('referrer_url', source());
@@ -508,13 +635,16 @@ $('#sf').addEventListener('submit', async e=>{
       await fetch(`https://app.kit.com/forms/${s.formId}/subscriptions`, {method:'POST', mode:'no-cors', body:fd});
     } else {
       $('#previewNote').style.display='block';
-      $('#sBtn').disabled=false; $('#sBtn').textContent='Send me alerts';
+      $('#sBtn').disabled=false; $('#sBtn').textContent='Join the list';
       return;
     }
   }catch(x){ ok = false; }
-  if (!ok){ err.textContent='Something went wrong. Please try again in a moment.'; err.style.display='block'; $('#sBtn').disabled=false; $('#sBtn').textContent='Send me alerts'; return; }
+  if (!ok){ err.textContent='Something went wrong. Please try again in a moment.'; err.style.display='block'; $('#sBtn').disabled=false; $('#sBtn').textContent='Join the list'; return; }
   try{ localStorage.setItem('ff_signed','1'); }catch(e){}
-  track('signup/' + (source() || 'direct'));
+  track('signup/' + (source() || 'direct')); if (pet) track('signup-pet/' + pet.replace(/ /g,'-'));
+  const nm = ($('#sPet').value||'').trim();
+  if (nm){ $('#doneHead').textContent = `You're on the list. Here's to a calm night for ${nm}.`; }
+  try{ const q = new URLSearchParams(); q.set('src','signup'); if (nm) q.set('pet', nm); if (pet) q.set('type', pet); $('#planLink').href = 'plan.html?' + q.toString(); }catch(e){}
   $('#signupForm').style.display = 'none';
   $('#signupDone').style.display = 'block';
   $('#shareBox').innerHTML = shareLinks(p.out);

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your Quiet Night plan - Fireworks Forecast</title>
+<meta name="description" content="A simple plan for fireworks nights with a nervous dog, cat or other pet: the days before, the night itself, and afterwards.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#eaf0ea">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Fraunces:opsz,wght,SOFT@9..144,500..700,100&display=swap" rel="stylesheet">
+<style>
+:root{--mist:#eaf0ea;--paper:#fbfcf8;--pine:#1d2b28;--moss:#56695f;--line:#d3ddd3;--night:#22304f;--lamp:#f2b44c;--lamp2:#d9902a;
+  --serif:"Fraunces",Georgia,serif;--sans:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif}
+*{box-sizing:border-box}
+body{margin:0;background:var(--mist);color:var(--pine);font:17px/1.6 var(--sans)}
+h1,h2,.brand{font-family:var(--serif);font-variation-settings:"SOFT" 100;font-weight:650;letter-spacing:-.01em}
+a{color:var(--pine);text-decoration-color:var(--lamp2);text-underline-offset:3px}
+:focus-visible{outline:3px solid var(--lamp2);outline-offset:2px}
+.wrap{max-width:680px;margin:0 auto;padding:0 20px 40px}
+header{display:flex;align-items:center;gap:10px;padding:16px 0 6px}
+.brand{font-size:19px;text-decoration:none;color:var(--pine)}
+h1{font-size:clamp(32px,8vw,48px);line-height:1.04;margin:18px 0 10px}
+.lede{color:#34443f;margin:0 0 18px}
+.tools{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 8px}
+.btn{appearance:none;border:0;border-radius:12px;padding:12px 16px;font:700 16px var(--sans);cursor:pointer;background:var(--lamp);color:#2a1d07;text-decoration:none;display:inline-block}
+.btn.quiet{background:#fff;border:1.5px solid #c3cfc4;font-weight:400;color:var(--pine)}
+ol.stages{list-style:none;margin:26px 0 0;padding:0;counter-reset:s;display:grid;gap:18px}
+ol.stages>li{counter-increment:s;background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:18px 20px}
+ol.stages h2{font-size:24px;line-height:1.15;margin:0 0 10px;display:flex;gap:12px;align-items:baseline}
+ol.stages h2::before{content:counter(s);flex:0 0 auto;width:30px;height:30px;border-radius:50%;background:var(--night);color:#fff;font:700 15px/30px var(--sans);text-align:center;transform:translateY(-3px)}
+ul.do{margin:0;padding:0;list-style:none;display:grid;gap:10px}
+ul.do li{padding-left:30px;position:relative}
+ul.do li::before{content:"";position:absolute;left:2px;top:.35em;width:16px;height:16px;border-radius:5px;border:2px solid #9fb3a5;background:#fff}
+ul.do li b{display:block}
+ul.do li span{color:var(--moss);font-size:15.5px}
+ul.do li{cursor:pointer}
+ul.do li.ticked::before{background:var(--pine) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 8.5l3 3 6-7' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/12px no-repeat;border-color:var(--pine)}
+ul.do li.ticked b{text-decoration:line-through;text-decoration-color:#9fb3a5}
+.who{display:inline-block;font-size:13px;font-weight:700;color:#3f6150;background:#dce9df;border-radius:6px;padding:0 6px;margin-right:6px}
+.note{margin-top:22px;background:#fff4dc;border:1px solid #efd39b;border-radius:18px;padding:16px 20px}
+.note h2{font-size:21px;margin:0 0 6px}
+.note p{margin:0}
+footer{color:var(--moss);font-size:14px;margin-top:28px;border-top:1.5px solid var(--line);padding-top:16px}
+footer p{margin:6px 0}
+@media print{
+  body{background:#fff;font-size:12pt}
+  .tools,.back,header svg{display:none}
+  ol.stages>li,.note{break-inside:avoid;border-color:#bbb}
+  ul.do li::before{border-color:#666}
+}
+</style>
+<script>
+(function(){ var src=''; try{ var q=new URLSearchParams(location.search); src=q.get('src')||''; }catch(e){}
+  window.goatcounter = { path: function(){ return location.pathname || '/plan.html'; }, referrer: function(){ return src || document.referrer || ''; } }; })();
+</script>
+<script data-goatcounter="https://fireworksforecast.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <svg width="34" height="34" viewBox="0 0 40 40" aria-hidden="true">
+      <circle cx="20" cy="20" r="19" fill="#22304f"/>
+      <path d="M24.5 9.5a11 11 0 1 0 6 18.6A9 9 0 0 1 24.5 9.5z" fill="#f3efe4"/>
+      <g stroke="#f2b44c" stroke-width="2" stroke-linecap="round"><path d="M11 11l2 2M9 17h2.6M14 7.5l.6 2.6"/></g>
+    </svg>
+    <a class="brand" href="/">Fireworks Forecast</a>
+  </header>
+
+  <h1 id="title">Your Quiet Night plan</h1>
+  <p class="lede">For the nights fireworks are most likely: Bonfire Night weekend, Diwali and New Year's Eve. Tick things off as you go. Based on advice from the RSPCA and Dogs Trust.</p>
+  <div class="tools">
+    <button class="btn" type="button" onclick="window.print()">Print or save as PDF</button>
+    <a class="btn quiet back" href="/">See display times near you</a>
+  </div>
+
+  <ol class="stages">
+    <li>
+      <h2>A few days before</h2>
+      <ul class="do">
+        <li><b>Check the microchip and ID tag</b><span>Make sure your phone number and address are up to date, in case they bolt.</span></li>
+        <li data-for="dog cat"><b>Set up a den</b><span>A covered crate, a space behind the sofa or a quiet corner with their own bedding, somewhere they can reach at all times. Cats like hiding places up high too.</span></li>
+        <li><b>Find out when displays near you start</b><span>Put in your postcode on <a href="/">Fireworks Forecast</a>, and note the big nights for garden fireworks.</span></li>
+        <li data-for="other"><span class="who">Rabbits and guinea pigs</span><span>Partly cover hutches and runs with a blanket, leaving a gap to look out, and add extra bedding to burrow in. If you bring them indoors, do it gradually.</span></li>
+        <li data-for="other"><span class="who">Horses</span><span>Check fencing is secure, and let organisers of nearby displays know there are horses close by.</span></li>
+        <li><b>Very scared pet? Talk to your vet now</b><span>They can discuss calming products or medication, or refer you to a behaviourist for longer-term help.</span></li>
+      </ul>
+    </li>
+    <li>
+      <h2>On the day</h2>
+      <ul class="do">
+        <li data-for="dog"><b>Walk in daylight</b><span>Do the evening walk well before dusk, keep them on the lead, and make sure they've had a toilet break.</span></li>
+        <li data-for="dog cat"><b>Feed before the fireworks start</b><span>Nervous pets often won't eat once the bangs begin.</span></li>
+        <li data-for="cat"><b>Bring cats in before dark</b><span>Close the cat flap and put out a litter tray.</span></li>
+        <li><b>Shut out the night</b><span>Close windows and curtains, and check doors, gates and garden fences are secure.</span></li>
+        <li><b>Plan to be home</b><span>Dogs especially can panic if left alone during fireworks, so stay in with them if you can.</span></li>
+      </ul>
+    </li>
+    <li>
+      <h2>While the fireworks are going off</h2>
+      <ul class="do">
+        <li><b>Put the TV or calm music on</b><span>It helps soften the bangs.</span></li>
+        <li><b>Comfort them if they come to you</b><span>It's fine to reassure a scared pet. If they'd rather hide, let them stay where they feel safe.</span></li>
+        <li><b>Stay calm and never tell them off</b><span>Being relaxed yourself helps. A chew or a favourite toy keeps some dogs busy.</span></li>
+      </ul>
+    </li>
+    <li>
+      <h2>Afterwards</h2>
+      <ul class="do">
+        <li><b>Check the garden before letting them out</b><span>Look for spent fireworks and debris that may have landed overnight.</span></li>
+        <li><b>Note what helped</b><span>Write down how they coped and what worked, so you're ready for New Year's Eve.</span></li>
+      </ul>
+    </li>
+  </ol>
+
+  <div class="note">
+    <h2>If it's bad every year</h2>
+    <p>Fear of fireworks can be treated over weeks with gradual sound training, ideally with help from your vet or a qualified behaviourist. It's worth starting early in the new year, well before next autumn.</p>
+  </div>
+
+  <footer>
+    <p>Sources: <a href="https://www.rspca.org.uk/getinvolved/campaign/fireworks" target="_blank" rel="noopener">RSPCA fireworks advice</a> and <a href="https://www.dogstrust.org.uk/fireworks" target="_blank" rel="noopener">Dogs Trust fireworks advice</a>. This is general guidance, not veterinary advice. If you're worried about your pet, speak to your vet.</p>
+    <p>Fireworks Forecast is free and non-commercial, run by a local dog owner.</p>
+  </footer>
+</div>
+<script>
+(function(){
+  var q; try{ q = new URLSearchParams(location.search); }catch(e){ return; }
+  var name = (q.get('pet')||'').trim().slice(0,40), type = (q.get('type')||'').trim();
+  if (name){ var t = document.getElementById('title'); t.textContent = name + (/s$/i.test(name) ? "' " : "'s ") + 'Quiet Night plan'; document.title = t.textContent + ' - Fireworks Forecast'; }
+  // Show only the lines for the pet they told us about. "other" or nothing shows everything.
+  var want = type === 'dog' ? ['dog'] : type === 'cat' ? ['cat'] : type === 'dog and cat' ? ['dog','cat'] : null;
+  document.querySelectorAll('ul.do li').forEach(function(li){
+    li.setAttribute('role','checkbox'); li.setAttribute('aria-checked','false'); li.tabIndex = 0;
+    function flip(){ var on = li.classList.toggle('ticked'); li.setAttribute('aria-checked', String(on)); }
+    li.addEventListener('click', flip);
+    li.addEventListener('keydown', function(e){ if (e.key===' '||e.key==='Enter'){ e.preventDefault(); flip(); } });
+  });
+  if (want){
+    document.querySelectorAll('[data-for]').forEach(function(li){
+      var tags = li.getAttribute('data-for').split(' ');
+      if (!tags.some(function(x){ return want.indexOf(x) > -1; })) li.style.display = 'none';
+    });
+  }
+})();
+</script>
+</body>
+</html>
