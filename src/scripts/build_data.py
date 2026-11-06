@@ -91,6 +91,8 @@ for i, e in enumerate(sorted(ev, key=lambda e:(e['date'], e['fireworks_time'] or
     if clean.startswith('Wokingham Charity'): out[-1]['g'] = None
     if clean.startswith('Flackwell'): out[-1]['f'] = '19:15'
     if clean.startswith('Dorney'): out[-1]['f'] = '18:00'; out[-1]['g'] = '17:00'
+    if clean.startswith('Magic in the Sky'): out[-1]['g'] = '17:45'; out[-1]['note'] = 'Bonfire 18:15, fireworks about 19:00 (organiser).'
+    if clean.startswith('Fire.FEST'): out[-1]['g'] = '17:00'
     if clean.startswith('Woking Fireworks'): out[-1]['u'] = 'https://www.wokingfireworks.org/'; out[-1]['st'] = 'organiser'; out[-1]['note'] = 'Funfair and food from 17:30. Details and tickets on the organiser site.'
 json.dump(out, open('/home/claude/data/events_final.json','w'), indent=1)
 print(len(out), 'events')

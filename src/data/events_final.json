@@ -431,7 +431,7 @@
   "v": "Stone Meadow, London Road",
   "d": "2026-11-07",
   "f": "19:00",
-  "g": "17:30",
+  "g": "17:45",
   "k": "bonfire_night",
   "s": "on",
   "u": "https://tickettailor.com/events/csgfireworks/2340412",
@@ -439,7 +439,7 @@
   "lat": 51.63193,
   "lng": -0.56548,
   "loc": "pc",
-  "note": ""
+  "note": "Bonfire 18:15, fireworks about 19:00 (organiser)."
  },
  {
   "id": 26,
@@ -737,7 +737,7 @@
   "v": "Braywick Park (Braywick Sports Ground)",
   "d": "2026-11-07",
   "f": null,
-  "g": null,
+  "g": "17:00",
   "k": "bonfire_night",
   "s": "on",
   "u": "https://aandlevents.net/fire-fest",
