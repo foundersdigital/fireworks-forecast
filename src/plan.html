@@ -39,6 +39,9 @@ ul.do li{cursor:pointer}
 ul.do li.ticked::before{background:var(--pine) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 8.5l3 3 6-7' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/12px no-repeat;border-color:var(--pine)}
 ul.do li.ticked b{text-decoration:line-through;text-decoration-color:#9fb3a5}
 .who{display:inline-block;font-size:13px;font-weight:700;color:#3f6150;background:#dce9df;border-radius:6px;padding:0 6px;margin-right:6px}
+.join{margin-top:22px;background:#22304f;color:#eef0f5;border-radius:18px;padding:18px 20px}
+.join h2{font-size:22px;margin:0 0 6px;color:#fff}
+.join p{margin:0 0 12px;color:#d8dbe4}
 .note{margin-top:22px;background:#fff4dc;border:1px solid #efd39b;border-radius:18px;padding:16px 20px}
 .note h2{font-size:21px;margin:0 0 6px}
 .note p{margin:0}
@@ -46,7 +49,7 @@ footer{color:var(--moss);font-size:14px;margin-top:28px;border-top:1.5px solid v
 footer p{margin:6px 0}
 @media print{
   body{background:#fff;font-size:12pt}
-  .tools,.back,header svg{display:none}
+  .tools,.back,header svg,.join{display:none}
   ol.stages>li,.note{break-inside:avoid;border-color:#bbb}
   ul.do li::before{border-color:#666}
 }
@@ -119,6 +122,12 @@ footer p{margin:6px 0}
     <p>Fear of fireworks can be treated over weeks with gradual sound training, ideally with help from your vet or a qualified behaviourist. It's worth starting early in the new year, well before next autumn.</p>
   </div>
 
+  <div class="join">
+    <h2>Get a heads-up before the next big night</h2>
+    <p>Join the free Quiet Nights list for an email on the morning of any display near you, and a reminder before New Year's Eve.</p>
+    <a class="btn" id="joinLink" href="/?src=plan#signupSec">Join the list</a>
+  </div>
+
   <footer>
     <p>Sources: <a href="https://www.rspca.org.uk/getinvolved/campaign/fireworks" target="_blank" rel="noopener">RSPCA fireworks advice</a> and <a href="https://www.dogstrust.org.uk/fireworks" target="_blank" rel="noopener">Dogs Trust fireworks advice</a>. This is general guidance, not veterinary advice. If you're worried about your pet, speak to your vet.</p>
     <p>Fireworks Forecast is free and non-commercial, run by a local dog owner.</p>
@@ -127,7 +136,10 @@ footer p{margin:6px 0}
 <script>
 (function(){
   var q; try{ q = new URLSearchParams(location.search); }catch(e){ return; }
-  var name = (q.get('pet')||'').trim().slice(0,40), type = (q.get('type')||'').trim();
+  var name = (q.get('pet')||'').trim().slice(0,40), type = (q.get('type')||'').trim(), src = q.get('src')||'';
+  var jb = document.querySelector('.join');
+  if (src === 'signup' && jb) jb.style.display = 'none';
+  else if (src && document.getElementById('joinLink')) document.getElementById('joinLink').href = '/?src=' + encodeURIComponent(src) + '#signupSec';
   if (name){ var t = document.getElementById('title'); t.textContent = name + (/s$/i.test(name) ? "' " : "'s ") + 'Quiet Night plan'; document.title = t.textContent + ' - Fireworks Forecast'; }
   // Show only the lines for the pet they told us about. "other" or nothing shows everything.
   var want = type === 'dog' ? ['dog'] : type === 'cat' ? ['cat'] : type === 'dog and cat' ? ['dog','cat'] : null;
