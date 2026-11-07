@@ -124,6 +124,15 @@ h2{font-size:28px;line-height:1.12;margin:0 0 12px}
 .signup .fields .row input{flex:1 1 160px}
 .signup button[type=submit]{width:100%;margin-top:4px;font-size:17.5px;padding:15px}
 .signup .fine{font-size:14px;color:#b9bfcf;margin-top:12px}
+.signup .opt{font-weight:400;color:#b9bfcf}
+#sPet{display:none}
+#sf.picked #sPet{display:block}
+#stickyJoin{position:fixed;left:10px;right:10px;bottom:10px;z-index:50;display:flex;align-items:center;gap:10px;justify-content:space-between;background:var(--night);color:#fff;border-radius:16px;padding:10px 10px 10px 16px;box-shadow:0 8px 28px #0005;font-size:15px;line-height:1.3}
+#stickyJoin[hidden]{display:none}
+#stickyJoin button{flex:0 0 auto;background:var(--lamp);color:#2a1d07;border:0;border-radius:999px;padding:10px 16px;font:700 15.5px var(--sans);cursor:pointer}
+@media (min-width:700px){#stickyJoin{display:none!important}}
+body.has-sticky{padding-bottom:80px}
+@media (max-width:699px){#signupForm.timely ul{display:none}}
 .done{display:none}
 .done .btn{margin:6px 0 16px}
 .share{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
@@ -286,15 +295,15 @@ footer p{margin:6px 0}
   <section id="signupSec">
     <div class="signup">
       <div id="signupForm">
-        <h2>Join the Quiet Nights list</h2>
-        <p>For people whose dog or cat hates fireworks. Free, and we only email about fireworks.</p>
+        <h2 id="sHead">Join the Quiet Nights list</h2>
+        <p id="sLede">For people whose dog or cat hates fireworks. Free, and we only email about fireworks.</p>
         <ul>
           <li>Your Quiet Night plan, the moment you join</li>
           <li>A heads-up on the morning of any display near you</li>
           <li>A reminder before New Year's Eve, the next big night</li>
         </ul>
         <form id="sf" novalidate>
-          <label class="q" id="petQ">Who are you looking after?</label>
+          <label class="q" id="petQ">Who are you looking after? <span class="opt">(optional)</span></label>
           <div class="petchips" role="group" aria-labelledby="petQ">
             <button type="button" class="petchip" data-pet="dog" aria-pressed="false">A dog</button>
             <button type="button" class="petchip" data-pet="cat" aria-pressed="false">A cat</button>
@@ -323,6 +332,7 @@ footer p{margin:6px 0}
       </div>
     </div>
   </section>
+  <div id="stickyJoin" hidden><span id="stickyTxt">Get a heads-up on fireworks near you</span><button type="button" id="stickyBtn">Join free</button></div>
 
   <section>
     <h2>The big nights for garden fireworks</h2>
@@ -509,6 +519,7 @@ function render(){
     $('#tonight').innerHTML = `<div class="tonight calm"><span class="tag">Not covered yet</span><h3>We don't cover ${esc(here.label)} yet.</h3><p>Fireworks Forecast started in Berkshire and the towns around it. Join the Quiet Nights list below and we'll tell you when your area is added, plus send a reminder before New Year's Eve.</p></div>`;
     $('#nights').innerHTML = '';
     $('#sPc').value = $('#sPc').value || here.code || '';
+    try{ setSticky(!secVisible); }catch(e){}
     return;
   }
 
@@ -562,6 +573,7 @@ function render(){
       ${list.map(evRow).join('')}</div>`;
   }).join('');
   if (!$('#sPc').value) $('#sPc').value = here.code || '';
+  try{ setSticky(!secVisible); }catch(e){}
 }
 
 /* ---------- Search ---------- */
@@ -596,7 +608,35 @@ let pet = '';
 document.querySelectorAll('.petchip').forEach(b=>b.addEventListener('click', ()=>{
   pet = (pet===b.dataset.pet) ? '' : b.dataset.pet;
   document.querySelectorAll('.petchip').forEach(x=>x.setAttribute('aria-pressed', String(x.dataset.pet===pet)));
+  $('#sf').classList.toggle('picked', !!pet);
 }));
+/* Signup message follows the calendar: the night before a 1am night, talk about tomorrow */
+(function(){
+  try{
+    const t = today(), tm = new Date(t+'T12:00:00Z'); tm.setUTCDate(tm.getUTCDate()+1); const tomorrow = tm.toISOString().slice(0,10);
+    const big = PEAKS.filter(p=>p.c==='1am');
+    const tmw = big.find(p=>p.d===tomorrow), tonight = big.find(p=>p.d===t);
+    if (tmw){
+      $('#sHead').textContent = `${tmw.t} is tomorrow night`;
+      $('#signupForm').classList.add('timely');
+      $('#sLede').textContent = `Fireworks are allowed until ${tmw.c}, and most aren't listed anywhere. Join free: your Quiet Night plan now, and a heads-up tomorrow morning on what's planned near you.`;
+      $('#stickyTxt').textContent = `${tmw.t} is tomorrow: get the morning heads-up`;
+    } else if (tonight){
+      $('#sHead').textContent = `It's ${tonight.t} tonight`;
+      $('#signupForm').classList.add('timely');
+      $('#sLede').textContent = `Fireworks are allowed until ${tonight.c}. Join free for your Quiet Night plan now, and a reminder before the next big night.`;
+      $('#stickyTxt').textContent = `${tonight.t} tonight: get your Quiet Night plan`;
+    }
+  }catch(e){}
+})();
+/* Funnel: did they see the box, start it, or use the phone bar? */
+let seenSent=false, startSent=false, stickyOff=false;
+function signed(){ try{ return localStorage.getItem('ff_signed')==='1'; }catch(e){ return false; } }
+function setSticky(show){ const b=$('#stickyJoin'); const on = show && !stickyOff && !signed() && window.innerWidth<700; b.hidden=!on; document.body.classList.toggle('has-sticky', on); }
+let secVisible=false;
+try{ new IntersectionObserver(es=>{ es.forEach(en=>{ secVisible=en.isIntersecting; if (secVisible && !seenSent && $('#results').style.display==='block'){ seenSent=true; track('signup-seen'); } setSticky(!secVisible && $('#results').style.display==='block'); }); }, {threshold:0.25}).observe($('#signupSec')); }catch(e){}
+$('#sEmail').addEventListener('focus', ()=>{ if(!startSent){ startSent=true; track('signup-start'); } });
+$('#stickyBtn').addEventListener('click', ()=>{ track('cta/sticky'); $('#signupSec').scrollIntoView({behavior:'smooth', block:'start'}); setTimeout(()=>{ try{ $('#sEmail').focus({preventScroll:true}); }catch(e){} }, 600); });
 function source(){
   try{ const q = new URLSearchParams(location.search); return q.get('src') || q.get('utm_source') || document.referrer.replace(/^https?:\/\/([^/]+).*/,'$1') || 'direct'; }catch(e){ return 'direct'; }
 }
@@ -650,6 +690,7 @@ $('#sf').addEventListener('submit', async e=>{
   const nm = ($('#sPet').value||'').trim();
   if (nm){ $('#doneHead').textContent = `You're on the list. Here's to a calm night for ${nm}.`; }
   try{ const q = new URLSearchParams(); q.set('src','signup'); if (nm) q.set('pet', nm); if (pet) q.set('type', pet); $('#planLink').href = 'plan.html?' + q.toString(); }catch(e){}
+  stickyOff = true; setSticky(false);
   $('#signupForm').style.display = 'none';
   $('#signupDone').style.display = 'block';
   $('#shareBox').innerHTML = shareLinks(p.out);
