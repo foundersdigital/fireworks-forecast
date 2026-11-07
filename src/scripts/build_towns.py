@@ -96,7 +96,11 @@ def page(town, code, others):
             note = f'<div class="evnote">{e(x["note"])}</div>' if x.get('note') else ''
             rows.append(f'<div class="ev">{t}<div><b>{e(x["n"])}</b><div class="sub">{e(x["t"])}, {m:.1f} miles from {e(town)}</div>{note}{link}</div></div>')
             start = d + ('T' + x['f'] + ':00' if x['f'] else '')
-            ld.append({'@type': 'Event', 'name': x['n'], 'startDate': start, 'eventStatus': 'https://schema.org/EventScheduled',
+            when = (f"Fireworks {x['f']}" if x['f'] else 'Fireworks after dark') + (f", gates {x['g']}" if x['g'] else '') + '.'
+            about = f"Public fireworks display at {x.get('v') or x['t']}, {x['t']}. {when}" + (f" {x['note']}" if x.get('note') else '')
+            ld.append({'@type': 'Event', 'name': x['n'], 'startDate': start, 'endDate': d, 'description': about,
+                       'image': [SITE + '/img/scene-1x1.png', SITE + '/img/scene-4x3.png', SITE + '/img/scene-16x9.png'],
+                       'eventStatus': 'https://schema.org/EventScheduled',
                        'eventAttendanceMode': 'https://schema.org/OfflineEventAttendanceMode',
                        'location': {'@type': 'Place', 'name': x.get('v') or x['t'], 'address': {'@type': 'PostalAddress', 'addressLocality': x['t'], 'addressCountry': 'GB'}},
                        **({'url': x['u']} if x.get('u') else {})})
@@ -128,6 +132,10 @@ def page(town, code, others):
 <link rel="canonical" href="{url}">
 <meta property="og:title" content="{e(title)}">
 <meta property="og:description" content="{e(desc)}">
+<meta property="og:image" content="{SITE}/img/share-1200x630.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#eaf0ea">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
