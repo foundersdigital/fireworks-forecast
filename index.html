@@ -63,6 +63,9 @@ section{margin:34px 0}
 h2{font-size:28px;line-height:1.12;margin:0 0 12px}
 .card{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:20px}
 #results{display:none}
+.herojoin{margin:12px 0 0;font-size:16px}
+.herojoin a{font-weight:700}
+body.signed .herojoin{display:none}
 .where{color:var(--moss);font-size:15.5px;margin:0 0 12px}
 
 /* Tonight */
@@ -274,6 +277,7 @@ footer p{margin:6px 0}
           <button type="button" class="ghost" id="geoBtn" style="margin-left:auto">Use my location</button>
         </div>
         <div class="err" id="err"></div>
+        <p class="herojoin" id="heroJoin">Not checking tonight? <a href="#signupSec" id="heroJoinLink">Get a free heads-up the day before any display near you</a></p>
         <div class="hint">On a still night you can hear fireworks 3 to 5 miles away, and further for the big racecourse shows.</div>
       </form>
       <p class="stats" id="stats"></p>
@@ -573,6 +577,7 @@ function render(){
       ${list.map(evRow).join('')}</div>`;
   }).join('');
   if (!$('#sPc').value) $('#sPc').value = here.code || '';
+  try{ nyeCopy(!near.length); }catch(e){}
   try{ setSticky(!secVisible); }catch(e){}
 }
 
@@ -629,12 +634,27 @@ document.querySelectorAll('.petchip').forEach(b=>b.addEventListener('click', ()=
     }
   }catch(e){}
 })();
+/* After the autumn displays: talk about New Year's Eve instead */
+const NYE_HEAD = "Get a heads-up before New Year's Eve";
+const NYE_LEDE = "Fireworks are allowed until 1am on New Year's Eve. Join free for your Quiet Night plan now, and we'll email you before the night, plus the day before any new display near you.";
+let S0 = null;
+function nyeCopy(on){
+  if ($('#signupForm').classList.contains('timely')) return;
+  if (!S0) S0 = { h: $('#sHead').textContent, l: $('#sLede').textContent, k: $('#stickyTxt').textContent };
+  $('#sHead').textContent = on ? NYE_HEAD : S0.h;
+  $('#sLede').textContent = on ? NYE_LEDE : S0.l;
+  $('#stickyTxt').textContent = on ? "Get a heads-up before New Year's Eve" : S0.k;
+}
+try{ if (!EVENTS.some(e=>e.d>=today() && e.s==='on')) nyeCopy(true); }catch(e){}
 /* Funnel: did they see the box, start it, or use the phone bar? */
 let seenSent=false, startSent=false, stickyOff=false;
 function signed(){ try{ return localStorage.getItem('ff_signed')==='1'; }catch(e){ return false; } }
 function setSticky(show){ const b=$('#stickyJoin'); const on = show && !stickyOff && !signed() && window.innerWidth<700; b.hidden=!on; document.body.classList.toggle('has-sticky', on); }
 let secVisible=false;
-try{ new IntersectionObserver(es=>{ es.forEach(en=>{ secVisible=en.isIntersecting; if (secVisible && !seenSent && $('#results').style.display==='block'){ seenSent=true; track('signup-seen'); } setSticky(!secVisible && $('#results').style.display==='block'); }); }, {threshold:0.25}).observe($('#signupSec')); }catch(e){}
+let seenNoSearch=false;
+try{ new IntersectionObserver(es=>{ es.forEach(en=>{ secVisible=en.isIntersecting; const searched = $('#results').style.display==='block'; if (secVisible && searched && !seenSent){ seenSent=true; track('signup-seen'); } if (secVisible && !searched && !seenNoSearch){ seenNoSearch=true; track('signup-seen/nosearch'); } setSticky(!secVisible && (searched || en.boundingClientRect.top < 0)); }); }, {threshold:0.25}).observe($('#signupSec')); }catch(e){}
+$('#heroJoinLink').addEventListener('click', ()=>{ track('cta/hero'); setTimeout(()=>{ try{ $('#sEmail').focus({preventScroll:true}); }catch(e){} }, 600); });
+try{ if (signed()) document.body.classList.add('signed'); }catch(e){}
 $('#sEmail').addEventListener('focus', ()=>{ if(!startSent){ startSent=true; track('signup-start'); } });
 $('#stickyBtn').addEventListener('click', ()=>{ track('cta/sticky'); $('#signupSec').scrollIntoView({behavior:'smooth', block:'start'}); setTimeout(()=>{ try{ $('#sEmail').focus({preventScroll:true}); }catch(e){} }, 600); });
 function source(){

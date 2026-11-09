@@ -76,6 +76,12 @@ footer p{margin:6px 0}
 .cta p{margin:0 0 12px;color:#d8dbe4}
 .cta .btn{margin:0 8px 8px 0}
 .cta .btn.quiet{background:transparent;color:#fff;border:1.5px solid #4a5a80}
+.cta form{margin:0}
+.cta .frow{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 10px}
+.cta input{flex:1 1 200px;min-width:0;border:0;border-radius:12px;padding:12px 14px;font:16px var(--sans);color:#1d2a26}
+.cta input.pc{flex:0 1 110px}
+.cta .terr{color:#ffb4a8;margin:4px 0 8px;font-size:15px}
+.cta .fine{font-size:13.5px;color:#b9bfce;margin:6px 0 0}
 .empty{color:var(--moss)}
 .towns{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:15px}
 .peaks{margin:0;padding-left:20px;color:#34443f}
@@ -93,10 +99,22 @@ footer p{margin:6px 0}
   <h1>Fireworks near Slough</h1>
   <p class="lede">There are no more public displays listed within 10 miles of Slough this autumn. The next big night is New Year's Eve, when fireworks are allowed until 1am.</p>
   <p class="empty">Join the list below and we will remind you before New Year's Eve.</p>
-  <div class="cta">
-    <h2>Join the Quiet Nights list</h2>
-    <p>For people whose dog or cat hates fireworks. Get a free Quiet Night plan, a heads-up the day before any display near you, and a reminder before New Year's Eve.</p>
-    <a class="btn" href="/?src=town-slough#signupSec">Join the list</a><a class="btn quiet" href="/?src=town-slough#sl1">Check your own postcode</a>
+  <div class="cta" id="join">
+    <div id="tForm">
+    <h2>Get a heads-up before New Year's Eve</h2>
+    <p>Fireworks are allowed until 1am on New Year's Eve. Join free for your Quiet Night plan now, and we'll email you before the night, plus the day before any new display near you.</p>
+    <form id="tsf" novalidate>
+      <div class="frow"><input id="tEmail" type="email" name="email" autocomplete="email" placeholder="Your email" aria-label="Your email" required><input id="tPc" class="pc" type="text" name="postcode" autocomplete="postal-code" value="SL1" maxlength="9" aria-label="Your postcode" required></div>
+      <button class="btn" type="submit" id="tBtn">Join the list</button><a class="btn quiet" href="/?src=town-slough#sl1">Check your own postcode</a>
+      <p class="terr" id="tErr" hidden></p>
+      <p class="fine">Free. We only email about fireworks, and you can unsubscribe any time by replying STOP.</p>
+    </form>
+    </div>
+    <div id="tDone" hidden>
+      <h2>You're on the list.</h2>
+      <p>We'll email you the day before any display near you, and again before New Year's Eve.</p>
+      <a class="btn" href="/plan.html?src=signup">Open your Quiet Night plan</a>
+    </div>
   </div>
   <section class="day">
     <h2>Garden fireworks</h2>
@@ -111,5 +129,30 @@ footer p{margin:6px 0}
     <p>Fireworks Forecast is free and non-commercial, run by a local dog owner.</p>
   </footer>
 </div>
+<script>
+(function(){
+  var C = {"action": "https://docs.google.com/forms/d/e/1FAIpQLSdgNE_-nqt-2e5a0PYEyw_bRFByMvJrBw2bu88p-hh2Sjwk8g/formResponse", "emailField": "entry.1288943294", "postcodeField": "entry.1720215959", "sourceField": "entry.20536898", "src": "town-slough"};
+  function track(n){ try{ if (window.goatcounter && window.goatcounter.count) window.goatcounter.count({path:n, title:n, event:true}); }catch(x){} }
+  var f = document.getElementById('tsf'), em = document.getElementById('tEmail'), pc = document.getElementById('tPc'), er = document.getElementById('tErr'), b = document.getElementById('tBtn'), started = false;
+  em.addEventListener('focus', function(){ if (!started){ started = true; track('signup-start/town'); } });
+  function fail(m){ er.textContent = m; er.hidden = false; b.disabled = false; b.textContent = 'Join the list'; }
+  f.addEventListener('submit', function(ev){
+    ev.preventDefault();
+    var email = em.value.trim(), code = pc.value.trim().toUpperCase().replace(/\s+/g, ' ');
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return fail('Please enter a valid email address.');
+    if (!/^[A-Z]{1,2}[0-9][A-Z0-9]?( ?[0-9][A-Z]{2})?$/.test(code)) return fail('Please add your postcode (the first part is fine, e.g. RG12).');
+    er.hidden = true; b.disabled = true; b.textContent = 'Joining...';
+    var ref = ''; try{ if (document.referrer) ref = new URL(document.referrer).hostname; }catch(x){}
+    var fd = new FormData();
+    fd.append(C.emailField, email); fd.append(C.postcodeField, code);
+    fd.append(C.sourceField, C.src + (ref && ref.indexOf('fireworksforecast') < 0 ? ' via ' + ref : ''));
+    fetch(C.action, {method:'POST', mode:'no-cors', body:fd}).then(function(){
+      try{ localStorage.setItem('ff_signed', '1'); }catch(x){}
+      track('signup/' + C.src);
+      document.getElementById('tForm').hidden = true; document.getElementById('tDone').hidden = false;
+    }).catch(function(){ fail('Something went wrong. Please try again in a moment.'); });
+  });
+})();
+</script>
 </body>
 </html>
