@@ -299,7 +299,7 @@ footer p{margin:6px 0}
         <p id="sLede">For people whose dog or cat hates fireworks. Free, and we only email about fireworks.</p>
         <ul>
           <li>Your Quiet Night plan, the moment you join</li>
-          <li>A heads-up on the morning of any display near you</li>
+          <li>A heads-up the day before any display near you</li>
           <li>A reminder before New Year's Eve, the next big night</li>
         </ul>
         <form id="sf" novalidate>
@@ -325,7 +325,7 @@ footer p{margin:6px 0}
       </div>
       <div class="done" id="signupDone">
         <h2 id="doneHead">You're on the list.</h2>
-        <p id="doneMsg">We'll email you on the morning of any display near you, and again before New Year's Eve.</p>
+        <p id="doneMsg">We'll email you the day before any display near you, and again before New Year's Eve.</p>
         <a class="btn" id="planLink" href="plan.html?src=signup">Open your Quiet Night plan</a>
         <p><b>Know someone whose dog or cat hates fireworks?</b> Send them the list for your area. It takes them ten seconds to check their own postcode.</p>
         <div class="share" id="shareBox"></div>
@@ -619,8 +619,8 @@ document.querySelectorAll('.petchip').forEach(b=>b.addEventListener('click', ()=
     if (tmw){
       $('#sHead').textContent = `${tmw.t} is tomorrow night`;
       $('#signupForm').classList.add('timely');
-      $('#sLede').textContent = `Fireworks are allowed until ${tmw.c}, and most aren't listed anywhere. Join free: your Quiet Night plan now, and a heads-up tomorrow morning on what's planned near you.`;
-      $('#stickyTxt').textContent = `${tmw.t} is tomorrow: get the morning heads-up`;
+      $('#sLede').textContent = `Fireworks are allowed until ${tmw.c}, and most aren't listed anywhere. Join free: your Quiet Night plan now, and a heads-up before any display near you.`;
+      $('#stickyTxt').textContent = `${tmw.t} is tomorrow: get the heads-up`;
     } else if (tonight){
       $('#sHead').textContent = `It's ${tonight.t} tonight`;
       $('#signupForm').classList.add('timely');
