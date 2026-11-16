@@ -882,5 +882,39 @@
   "lng": -1.0052,
   "loc": "pc",
   "note": ""
+ },
+ {
+  "id": 52,
+  "n": "Maidenhead Christmas Lights Switch-on",
+  "t": "Maidenhead",
+  "v": "Town Hall, St Ives Road",
+  "d": "2026-11-21",
+  "f": "18:00",
+  "g": null,
+  "k": "other",
+  "s": "on",
+  "u": "https://www.visitsoutheastengland.com/events/maidenhead-christmas-lights-switch-on-and-festive-market-p779761",
+  "st": "listing",
+  "lat": 51.5226,
+  "lng": -0.7201,
+  "loc": "pc",
+  "note": "Festive market from 11:00. The countdown starts just before 6pm, then fireworks from the Town Hall roof, weather permitting."
+ },
+ {
+  "id": 53,
+  "n": "Thatcham Christmas Lights Switch-on",
+  "t": "Thatcham",
+  "v": "Town centre, High Street and The Broadway",
+  "d": "2026-11-28",
+  "f": null,
+  "g": null,
+  "k": "other",
+  "s": "on",
+  "u": "https://thatchamtowncouncil.gov.uk/event/christmas-lights-switch-on/",
+  "st": "council",
+  "lat": 51.4036,
+  "lng": -1.2608,
+  "loc": "area",
+  "note": "Market from 12:00, lights on at 6pm. Fireworks have marked the switch-on in past years, but the council has not confirmed them for 2026."
  }
 ]
