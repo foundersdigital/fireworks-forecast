@@ -19,6 +19,8 @@ TOWNS = [
     ('Beaconsfield', 'HP9'), ('Gerrards Cross', 'SL9'),
 ]
 
+CFG = json.load(open('/home/claude/site/config.live.json'))['signup']
+assert CFG.get('type') == 'googleform' and CFG.get('action'), 'town pages need the live signup config'
 ev = json.load(open('/home/claude/data/events_final.json'))
 dist = json.load(open('/home/claude/data/districts_named.json'))
 
@@ -52,10 +54,22 @@ EXTRA = """
 .cta h2{font-size:22px;margin:0 0 6px;color:#fff}
 .cta p{margin:0 0 12px;color:#d8dbe4}
 .cta .btn{margin:0 8px 8px 0}
+.wa{margin:12px 0 0}.wa a.btn{display:inline-block;background:#1f6f4a;color:#fff;border:0;padding:11px 16px;border-radius:12px;text-decoration:none;font-weight:700}
 .cta .btn.quiet{background:transparent;color:#fff;border:1.5px solid #4a5a80}
+.cta form{margin:0}
+.cta .frow{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 10px}
+.cta input{flex:1 1 200px;min-width:0;border:0;border-radius:12px;padding:12px 14px;font:16px var(--sans);color:#1d2a26}
+.cta input.pc{flex:0 1 110px}
+.cta .terr{color:#ffb4a8;margin:4px 0 8px;font-size:15px}
+.cta .fine{font-size:13.5px;color:#b9bfce;margin:6px 0 0}
 .empty{color:var(--moss)}
 .towns{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:15px}
 .peaks{margin:0;padding-left:20px;color:#34443f}
+.sticky{position:fixed;left:0;right:0;bottom:0;z-index:50;background:#22304f;color:#fff;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 16px calc(10px + env(safe-area-inset-bottom));box-shadow:0 -6px 20px rgba(20,30,50,.25);font:600 15px/1.25 var(--sans);transform:translateY(110%);transition:transform .25s}
+.sticky.on{transform:none}
+.sticky a{flex:none;background:#f2b44c;color:#3a2a08;border-radius:12px;padding:10px 16px;font-weight:700;text-decoration:none}
+.donewa{margin-top:10px}.donewa a{display:inline-block;background:#1f6f4a;color:#fff;border-radius:12px;padding:11px 16px;text-decoration:none;font-weight:700}
+body{padding-bottom:72px}
 """
 
 LOGO = '''<svg width="34" height="34" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="19" fill="#22304f"/><path d="M24.5 9.5a11 11 0 1 0 6 18.6A9 9 0 0 1 24.5 9.5z" fill="#f3efe4"/><g stroke="#f2b44c" stroke-width="2" stroke-linecap="round"><path d="M11 11l2 2M9 17h2.6M14 7.5l.6 2.6"/></g></svg>'''
@@ -65,6 +79,70 @@ GC = '''<script>
   window.goatcounter = { path: function(){ return location.pathname; }, referrer: function(){ return src || document.referrer || ''; } }; })();
 </script>
 <script data-goatcounter="https://fireworksforecast.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>'''
+
+def signup_script(signup_js):
+    return f'''<script>
+(function(){{
+  var C = {signup_js};
+  function track(n){{ try{{ if (window.goatcounter && window.goatcounter.count) window.goatcounter.count({{path:n, title:n, event:true}}); }}catch(x){{}} }}
+  document.addEventListener('click', function(ev){{ var a = ev.target.closest && ev.target.closest('[data-track]'); if (a) track(a.getAttribute('data-track')); }});
+  var f = document.getElementById('tsf'), em = document.getElementById('tEmail'), pc = document.getElementById('tPc'), er = document.getElementById('tErr'), b = document.getElementById('tBtn'), started = false;
+  em.addEventListener('focus', function(){{ if (!started){{ started = true; track('signup-start/' + C.kind); }} }});
+  function fail(m){{ er.textContent = m; er.hidden = false; b.disabled = false; b.textContent = 'Join the list'; }}
+  f.addEventListener('submit', function(ev){{
+    ev.preventDefault();
+    var email = em.value.trim(), code = pc.value.trim().toUpperCase().replace(/\\s+/g, ' ');
+    if (!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]{{2,}}$/.test(email)) return fail('Please enter a valid email address.');
+    if (!/^[A-Z]{{1,2}}[0-9][A-Z0-9]?( ?[0-9][A-Z]{{2}})?$/.test(code)) return fail('Please add your postcode (the first part is fine, e.g. RG12).');
+    er.hidden = true; b.disabled = true; b.textContent = 'Joining...';
+    var ref = ''; try{{ if (document.referrer) ref = new URL(document.referrer).hostname; }}catch(x){{}}
+    var fd = new FormData();
+    fd.append(C.emailField, email); fd.append(C.postcodeField, code);
+    fd.append(C.sourceField, C.src + (ref && ref.indexOf('fireworksforecast') < 0 ? ' via ' + ref : ''));
+    fetch(C.action, {{method:'POST', mode:'no-cors', body:fd}}).then(function(){{
+      try{{ localStorage.setItem('ff_signed', '1'); }}catch(x){{}}
+      track('signup/' + C.src);
+      document.getElementById('tForm').hidden = true; document.getElementById('tDone').hidden = false;
+      var sb = document.getElementById('sticky'); if (sb) sb.remove();
+    }}).catch(function(){{ fail('Something went wrong. Please try again in a moment.'); }});
+  }});
+  var sb = document.getElementById('sticky'), j = document.getElementById('join'), signed = false;
+  try{{ signed = localStorage.getItem('ff_signed') === '1'; }}catch(x){{}}
+  if (sb && j && !signed){{
+    var upd = function(){{ var r = j.getBoundingClientRect(); var vis = r.top < innerHeight && r.bottom > 0; sb.classList.toggle('on', !vis && window.scrollY > 150); }};
+    window.addEventListener('scroll', upd, {{passive:true}}); upd();
+  }} else if (sb) {{ sb.remove(); }}
+}})();
+</script>'''
+
+NYE = '2026-12-31'
+STICKY = '''<div class="sticky" id="sticky"><span>Free heads-up before New Year's Eve</span><a href="#join" data-track="cta/sticky">Join free</a></div>'''
+
+def wa_text(town, s):
+    from urllib.parse import quote
+    msg = (f"Fireworks near {town}: display times and what to expect on New Year's Eve, for anyone whose dog or cat hates the bangs. "
+           f"{SITE}/near/{s}/?src=wa")
+    return quote(msg)
+
+def nye_section(town, s, near_nye):
+    if near_nye:
+        rows = ''.join(f'<li><b>{e(x["n"])}</b>, {e(x["t"])} ({m:.1f} miles){(", fireworks " + e(x["f"])) if x["f"] else ""}{(". " + e(x["note"])) if x.get("priv") and x.get("note") else ""}</li>' for x, m in near_nye)
+        pub = f'<p class="lede" style="margin:0 0 8px">Displays listed within {RADIUS} miles:</p><ul class="peaks">{rows}</ul>'
+    else:
+        pub = (f'<p class="lede" style="margin:0 0 8px">No public New Year\'s Eve displays are listed within {RADIUS} miles of {e(town)} yet. '
+               'We add them as organisers announce them, and the list gets an email the day before.</p>')
+    return f"""<section class="day" id="nye">
+    <h2>New Year's Eve: Thursday 31 December</h2>
+    {pub}
+    <ul class="peaks">
+      <li>Garden fireworks are allowed until 1am. Expect the loudest stretch around midnight, with scattered bangs through the evening.</li>
+      <li>Walk the dog in daylight. Sunset is around 4pm.</li>
+      <li>Curtains closed and the radio on by 11:30pm, and stay with your pet through midnight. The London fireworks on TV are loud too.</li>
+      <li>Keep cats in from dusk, with a litter tray indoors.</li>
+    </ul>
+    <p><a href="/new-years-eve/?src=town-{s}">New Year's Eve guide for pet owners</a> &middot; <a href="/plan.html?src=town-{s}">Your Quiet Night plan</a></p>
+    <p class="wa"><a class="btn quiet" data-track="share/wa-town" href="https://wa.me/?text={wa_text(town, s)}" target="_blank" rel="noopener">Warn your street's WhatsApp group</a></p>
+  </section>"""
 
 def page(town, code, others):
     lat, lng, _ = dist[code]
@@ -77,6 +155,8 @@ def page(town, code, others):
         if m <= RADIUS:
             near.append((x, m))
     near.sort(key=lambda p: (p[0]['d'], p[0]['f'] or p[0]['g'] or '99', p[1]))
+    near_nye = [(x, m) for x, m in near if x['d'] == NYE]
+    nye_html = nye_section(town, s, near_nye)
     by_day = {}
     for x, m in near:
         by_day.setdefault(x['d'], []).append((x, m))
@@ -98,7 +178,7 @@ def page(town, code, others):
             start = d + ('T' + x['f'] + ':00' if x['f'] else '')
             when = (f"Fireworks {x['f']}" if x['f'] else 'Fireworks after dark') + (f", gates {x['g']}" if x['g'] else '') + '.'
             about = f"Public fireworks display at {x.get('v') or x['t']}, {x['t']}. {when}" + (f" {x['note']}" if x.get('note') else '')
-            ld.append({'@type': 'Event', 'name': x['n'], 'startDate': start, 'endDate': d, 'description': about,
+            if not x.get('priv'): ld.append({'@type': 'Event', 'name': x['n'], 'startDate': start, 'endDate': d, 'description': about,
                        'image': [SITE + '/img/scene-1x1.png', SITE + '/img/scene-4x3.png', SITE + '/img/scene-16x9.png'],
                        'eventStatus': 'https://schema.org/EventScheduled',
                        'eventAttendanceMode': 'https://schema.org/OfflineEventAttendanceMode',
@@ -108,16 +188,31 @@ def page(town, code, others):
 
     count = len(near)
     if count:
-        lede = (f'{count} public fireworks display{"s" if count != 1 else ""} within {RADIUS} miles of {e(town)} from {e(nice(near[0][0]["d"]))}, '
+        lede = (f'{count} fireworks display{"s" if count != 1 else ""} within {RADIUS} miles of {e(town)} from {e(nice(near[0][0]["d"]))}, '
                 'with start times, so you can get the dog walked and settle your pets before the bangs start.')
         body = ''.join(days_html)
     else:
-        lede = (f'There are no more public displays listed within {RADIUS} miles of {e(town)} this autumn. '
-                "The next big night is New Year's Eve, when fireworks are allowed until 1am.")
-        body = '<p class="empty">Join the list below and we will remind you before New Year\'s Eve.</p>'
+        lede = (f'No more public displays are listed within {RADIUS} miles of {e(town)} before New Year\'s Eve. '
+                "On the night, garden fireworks are allowed until 1am, so here is what to expect and how to plan.")
+        body = nye_html
 
-    title = f'Fireworks near {town} 2026: display times for pet owners'
-    desc = f'Every public fireworks display near {town} with start times, so dog and cat owners can plan walks and settle pets before the bangs. Free, updated {nice(TODAY)}.'
+    if count:
+        cta_head = 'Join the Quiet Nights list'
+        cta_lede = "For people whose dog or cat hates fireworks. Get a free Quiet Night plan, a heads-up the day before any display near you, and a short weekly countdown to New Year's Eve."
+    else:
+        cta_head = "Get a heads-up before New Year's Eve"
+        cta_lede = "Fireworks are allowed until 1am on New Year's Eve. Join free for your Quiet Night plan now, a short weekly countdown to the night, and a heads-up the day before any display near you."
+    if count:
+        title = f"Fireworks near {town} 2026: display times and New Year's Eve"
+        h1 = f'Fireworks near {e(town)}'
+        desc = f"Every public fireworks display near {town} with start times, plus what to expect on New Year's Eve, so dog and cat owners can plan walks and settle pets. Free, updated {nice(TODAY)}."
+        after_cta = nye_html
+    else:
+        title = f"New Year's Eve fireworks near {town} 2026: pet owner's guide"
+        h1 = f"Fireworks near {e(town)} on New Year's Eve"
+        desc = f"What to expect from fireworks near {town} on New Year's Eve 2026, and any public displays nearby, so dog and cat owners can plan the evening. Free, updated {nice(TODAY)}."
+        after_cta = ''
+    signup_js = json.dumps({'action': CFG['action'], 'emailField': CFG['emailField'], 'postcodeField': CFG['postcodeField'], 'sourceField': CFG['sourceField'], 'src': f'town-{s}', 'kind': 'town'})
     url = f'{SITE}/near/{s}/'
     src = f'town-{s}'
     other_links = ''.join(f'<a href="/near/{slug(o)}/">{e(o)}</a>' for o in others if o != town)
@@ -147,17 +242,32 @@ def page(town, code, others):
 <body>
 <div class="wrap">
   <header>{LOGO}<a class="brand" href="/?src={src}">Fireworks Forecast</a></header>
-  <h1>Fireworks near {e(town)}</h1>
+  <h1>{h1}</h1>
   <p class="lede">{lede}</p>
-  {body}
-  <div class="cta">
-    <h2>Join the Quiet Nights list</h2>
-    <p>For people whose dog or cat hates fireworks. Get a free Quiet Night plan, a heads-up on the morning of any display near you, and a reminder before New Year's Eve.</p>
-    <a class="btn" href="/?src={src}#signupSec">Join the list</a><a class="btn quiet" href="/?src={src}#{code.lower()}">Check your own postcode</a>
+  {body if count else ''}
+  <div class="cta" id="join">
+    <div id="tForm">
+    <h2>{cta_head}</h2>
+    <p>{cta_lede}</p>
+    <form id="tsf" novalidate>
+      <div class="frow"><input id="tEmail" type="email" name="email" autocomplete="email" placeholder="Your email" aria-label="Your email" required><input id="tPc" class="pc" type="text" name="postcode" autocomplete="postal-code" value="{e(code)}" maxlength="9" aria-label="Your postcode" required></div>
+      <button class="btn" type="submit" id="tBtn">Join the list</button><a class="btn quiet" href="/?src={src}#{code.lower()}">Check your own postcode</a>
+      <p class="terr" id="tErr" hidden></p>
+      <p class="fine">Free. We only email about fireworks, and you can unsubscribe any time by replying STOP.</p>
+    </form>
+    </div>
+    <div id="tDone" hidden>
+      <h2>You're on the list.</h2>
+      <p>We'll send a short countdown email each week until New Year's Eve, and a heads-up the day before any display near you.</p>
+      <a class="btn" href="/plan.html?src=signup">Open your Quiet Night plan</a>
+      <p class="donewa"><a data-track="share/wa-done" href="https://wa.me/?text={wa_text(town, s)}" target="_blank" rel="noopener">Tell your street's WhatsApp group</a></p>
+    </div>
   </div>
+  {'' if count else body}
+  {after_cta}
   <section class="day">
     <h2>Garden fireworks</h2>
-    <p class="lede" style="margin:0">Back-garden fireworks aren't listed anywhere. They peak on Bonfire Night, the weekend around it, Diwali (Sunday 8 November) and New Year's Eve. By law they must stop at 11pm, except midnight on Bonfire Night and 1am on Diwali and New Year's Eve.</p>
+    <p class="lede" style="margin:0">Back-garden fireworks aren't listed anywhere. They peak around Bonfire Night, Diwali and New Year's Eve. By law they must stop at 11pm, except midnight on Bonfire Night and 1am on New Year's Eve, Diwali and Chinese New Year.</p>
   </section>
   <section class="day">
     <h2>Fireworks near other towns</h2>
@@ -168,13 +278,119 @@ def page(town, code, others):
     <p>Fireworks Forecast is free and non-commercial, run by a local dog owner.</p>
   </footer>
 </div>
+{STICKY}
+{signup_script(signup_js)}
+</body>
+</html>
+'''
+
+def hub(names):
+    from urllib.parse import quote
+    src = 'nye'
+    url = f'{SITE}/new-years-eve/'
+    title = "New Year's Eve fireworks 2026 in Berkshire: a guide for pet owners"
+    desc = (f"What to expect from fireworks on New Year's Eve 2026 around Reading, Maidenhead, Windsor, Bracknell, Wokingham and Newbury, "
+            f"and how to get your dog or cat through the night. Free, updated {nice(TODAY)}.")
+    nye = sorted([x for x in ev if x['s'] == 'on' and x['d'] == NYE], key=lambda x: (x['f'] or '99', x['t']))
+    if nye:
+        rows = ''.join(f'<li><b>{e(x["n"])}</b>, {e(x["t"])}{(", fireworks " + e(x["f"])) if x["f"] else ""}{(". " + e(x["note"])) if x.get("note") else ""}</li>' for x in nye)
+        pub = f'<ul class="peaks">{rows}</ul><p>Check your postcode on the <a href="/?src={src}">main page</a> for distances from you.</p>'
+    else:
+        pub = ("<p>None are listed yet in Berkshire or nearby. Public New Year's Eve displays are rare round here: most of the noise comes from "
+               "back gardens, hotels and pubs. We add public displays as organisers announce them, and the list gets an email the day before.</p>")
+    town_links = ''.join(f'<a href="/near/{slug(o)}/">{e(o)}</a>' for o in names)
+    signup_js = json.dumps({'action': CFG['action'], 'emailField': CFG['emailField'], 'postcodeField': CFG['postcodeField'], 'sourceField': CFG['sourceField'], 'src': src, 'kind': 'nye'})
+    return f'''<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{e(title)}</title>
+<meta name="description" content="{e(desc)}">
+<link rel="canonical" href="{url}">
+<meta property="og:title" content="{e(title)}">
+<meta property="og:description" content="{e(desc)}">
+<meta property="og:image" content="{SITE}/img/share-1200x630.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#eaf0ea">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Fraunces:opsz,wght,SOFT@9..144,500..700,100&display=swap" rel="stylesheet">
+<style>{STYLE}{EXTRA}</style>
+{GC}
+</head>
+<body>
+<div class="wrap">
+  <header>{LOGO}<a class="brand" href="/?src={src}">Fireworks Forecast</a></header>
+  <h1>New Year's Eve fireworks: a calm night for your dog or cat</h1>
+  <p class="lede">On Thursday 31 December fireworks are allowed until 1am, and most of the bangs come from back gardens rather than public displays. Here is what to expect around Berkshire and nearby, and how to get your pet through it.</p>
+  <div class="cta" id="join">
+    <div id="tForm">
+    <h2>Get a heads-up before New Year's Eve</h2>
+    <p>Join free for your Quiet Night plan now, a short weekly countdown to the night, and a heads-up the day before any public display near you.</p>
+    <form id="tsf" novalidate>
+      <div class="frow"><input id="tEmail" type="email" name="email" autocomplete="email" placeholder="Your email" aria-label="Your email" required><input id="tPc" class="pc" type="text" name="postcode" autocomplete="postal-code" placeholder="Postcode" maxlength="9" aria-label="Your postcode" required></div>
+      <button class="btn" type="submit" id="tBtn">Join the list</button><a class="btn quiet" href="/?src={src}">Check your postcode</a>
+      <p class="terr" id="tErr" hidden></p>
+      <p class="fine">Free. We only email about fireworks, and you can unsubscribe any time by replying STOP.</p>
+    </form>
+    </div>
+    <div id="tDone" hidden>
+      <h2>You're on the list.</h2>
+      <p>We'll send a short countdown email each week until New Year's Eve, and a heads-up the day before any display near you.</p>
+      <a class="btn" href="/plan.html?src=signup">Open your Quiet Night plan</a>
+      <p class="donewa"><a data-track="share/wa-done" href="https://wa.me/?text={quote("What to expect from fireworks on New Year's Eve, and how to get your dog or cat through it: " + SITE + '/new-years-eve/?src=wa')}" target="_blank" rel="noopener">Tell your street's WhatsApp group</a></p>
+    </div>
+  </div>
+  <section class="day">
+    <h2>What to expect</h2>
+    <ul class="peaks">
+      <li>The usual 11pm curfew is extended to 1am on New Year's Eve, as it is on Diwali and Chinese New Year.</li>
+      <li>The loudest stretch is around midnight, when garden fireworks go off across every town at once. There are scattered bangs earlier in the evening too.</li>
+      <li>The London fireworks on TV at midnight are loud and sudden. Turn the volume down, or have music on instead.</li>
+      <li>Shops can sell fireworks from 26 December, so a few go off in the days before.</li>
+    </ul>
+  </section>
+  <section class="day">
+    <h2>Displays</h2>
+    {pub}
+  </section>
+  <section class="day">
+    <h2>On the day</h2>
+    <ul class="peaks">
+      <li>Walk the dog in daylight, ideally by 3:30pm. Sunset is around 4pm.</li>
+      <li>Feed a little earlier than usual, so they're settled before the evening.</li>
+      <li>Set up a den in the quietest room: a covered crate or a corner with their bed and a worn jumper.</li>
+      <li>Curtains closed and the radio or TV on by 11:30pm, and stay with them through midnight.</li>
+      <li>Keep cats in from dusk with a litter tray, and check your pet's microchip details are up to date in case they bolt.</li>
+    </ul>
+    <p><a href="/plan.html?src={src}">Your printable Quiet Night plan</a></p>
+    <p class="wa"><a class="btn quiet" data-track="share/wa-nye" href="https://wa.me/?text={quote("What to expect from fireworks on New Year's Eve, and how to get your dog or cat through it: " + SITE + '/new-years-eve/?src=wa')}" target="_blank" rel="noopener">Warn your street's WhatsApp group</a></p>
+  </section>
+  <section class="day">
+    <h2>New Year's Eve by town</h2>
+    <div class="towns">{town_links}</div>
+  </section>
+  <footer>
+    <p>Listings are compiled by hand from organiser, council and ticketing pages. Updated {e(nice(TODAY))}. Not affiliated with any organiser.</p>
+    <p>Fireworks Forecast is free and non-commercial, run by a local dog owner.</p>
+  </footer>
+</div>
+{STICKY}
+{signup_script(signup_js)}
 </body>
 </html>
 '''
 
 def main():
     names = [t for t, _ in TOWNS]
-    urls = [f'{SITE}/', f'{SITE}/plan.html']
+    urls = [f'{SITE}/', f'{SITE}/plan.html', f'{SITE}/new-years-eve/']
+    hdoc = hub(names)
+    assert '—' not in hdoc
+    os.makedirs(f'{REPO}/new-years-eve', exist_ok=True)
+    open(f'{REPO}/new-years-eve/index.html', 'w').write(hdoc)
     for town, code in TOWNS:
         assert code in dist, code
         s, doc = page(town, code, names)

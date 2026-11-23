@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Fireworks Forecast: a calm night in for your dog or cat</title>
 <meta name="description" content="See when the fireworks start near you, so the walk is done and the curtains are drawn before the first bang. Every public display in Berkshire and nearby, with start times. Free.">
+<link rel="canonical" href="https://fireworksforecast.co.uk/">
 <meta property="og:title" content="A calm night in for your dog or cat">
 <meta property="og:description" content="Put in your postcode and see when the fireworks start near you. Made for people whose pets hate the bangs.">
 <meta property="og:image" content="https://fireworksforecast.co.uk/img/share-1200x630.png">
@@ -63,6 +64,9 @@ section{margin:34px 0}
 h2{font-size:28px;line-height:1.12;margin:0 0 12px}
 .card{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:20px}
 #results{display:none}
+.herojoin{margin:12px 0 0;font-size:16px}
+.herojoin a{font-weight:700}
+body.signed .herojoin{display:none}
 .where{color:var(--moss);font-size:15.5px;margin:0 0 12px}
 
 /* Tonight */
@@ -274,6 +278,7 @@ footer p{margin:6px 0}
           <button type="button" class="ghost" id="geoBtn" style="margin-left:auto">Use my location</button>
         </div>
         <div class="err" id="err"></div>
+        <p class="herojoin" id="heroJoin">Not checking tonight? <a href="#signupSec" id="heroJoinLink">Get a free heads-up the day before any display near you</a></p>
         <div class="hint">On a still night you can hear fireworks 3 to 5 miles away, and further for the big racecourse shows.</div>
       </form>
       <p class="stats" id="stats"></p>
@@ -299,8 +304,8 @@ footer p{margin:6px 0}
         <p id="sLede">For people whose dog or cat hates fireworks. Free, and we only email about fireworks.</p>
         <ul>
           <li>Your Quiet Night plan, the moment you join</li>
-          <li>A heads-up on the morning of any display near you</li>
-          <li>A reminder before New Year's Eve, the next big night</li>
+          <li>A short weekly countdown to New Year's Eve: one small job a week</li>
+          <li>A heads-up the day before any display near you</li>
         </ul>
         <form id="sf" novalidate>
           <label class="q" id="petQ">Who are you looking after? <span class="opt">(optional)</span></label>
@@ -325,7 +330,7 @@ footer p{margin:6px 0}
       </div>
       <div class="done" id="signupDone">
         <h2 id="doneHead">You're on the list.</h2>
-        <p id="doneMsg">We'll email you on the morning of any display near you, and again before New Year's Eve.</p>
+        <p id="doneMsg">We'll send a short countdown email each week until New Year's Eve, and a heads-up the day before any display near you.</p>
         <a class="btn" id="planLink" href="plan.html?src=signup">Open your Quiet Night plan</a>
         <p><b>Know someone whose dog or cat hates fireworks?</b> Send them the list for your area. It takes them ten seconds to check their own postcode.</p>
         <div class="share" id="shareBox"></div>
@@ -444,7 +449,7 @@ function renderStats(){
   const t = today();
   const upcoming = EVENTS.filter(e=>e.d>=t && e.s==='on');
   const towns = new Set(upcoming.map(e=>e.t.split(' (')[0]));
-  $('#stats').innerHTML = `<b>${upcoming.length}</b> public displays in <b>${towns.size}</b> towns and villages, updated ${esc(nice(CHECKED,{weekday:undefined}))}. Free, run by a local dog owner.`;
+  $('#stats').innerHTML = `<b>${upcoming.length}</b> displays in <b>${towns.size}</b> towns and villages, updated ${esc(nice(CHECKED,{weekday:undefined}))}. Free, run by a local dog owner.`;
   $('#checked').textContent = nice(CHECKED,{weekday:'long'});
 }
 const PEAKS = [
@@ -475,8 +480,9 @@ function shareBar(msg, area){
   const base = (CONFIG.siteUrl || location.href.split('#')[0].split('?')[0]);
   const url = base + '?src=share' + (area ? '#' + area.toLowerCase() : '');
   const full = msg + ' ' + url;
+  const waFull = msg + ' ' + base + '?src=wa' + (area ? '#' + area.toLowerCase() : '');
   return `<div class="sharebar">Know a dog owner nearby?
-    <a href="https://wa.me/?text=${encodeURIComponent(full)}" target="_blank" rel="noopener">Send on WhatsApp</a>
+    <a href="https://wa.me/?text=${encodeURIComponent(waFull)}" target="_blank" rel="noopener">Send to your street's WhatsApp group</a>
     <a href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}" target="_blank" rel="noopener">Share on Facebook</a>
     <button type="button" data-copy="${esc(full)}" class="copyShare">Copy message</button></div>`;
 }
@@ -546,15 +552,15 @@ function render(){
     const next = near[0];
     const peakToday = PEAKS.find(p=>p.d===t);
     html = `<div class="tonight calm"><span class="tag">Tonight, ${esc(nice(t,{weekday:'long'}))}</span>
-      <h3>No public displays listed within ${radius} miles tonight.</h3>
+      <h3>No displays listed within ${radius} miles tonight.</h3>
       <p>${peakToday?`It's ${esc(peakToday.t)}, so garden fireworks are still likely. `:'Garden fireworks are still possible. '}Sunset is ${ssHM}; walk by ${walkBy} to be safe.</p>
-      ${next?`<p><b>Next display near you:</b> ${esc(nice(next.d))}${next.f?' at '+esc(next.f):''}, ${esc(next.n)} (${fmtMi(next.mi)} mi ${compass(next.br)}).</p>`:`<p>No upcoming public displays listed within ${radius} miles. Try a wider distance.</p>`}
+      ${next?`<p><b>Next display near you:</b> ${esc(nice(next.d))}${next.f?' at '+esc(next.f):''}, ${esc(next.n)} (${fmtMi(next.mi)} mi ${compass(next.br)}).</p>`:`<p>No upcoming displays listed within ${radius} miles. Try a wider distance.</p>`}
     </div>`;
   }
   const area = (outward(here.code||'')||{}).out || '';
   const place = here.label.replace(/^[A-Z0-9 ]+ \((.*)\)$/,'$1');
   const shareMsg = todays.length
-    ? `Fireworks near ${place} tonight: ${todays.length} public display${todays.length>1?'s':''}, first bangs ${(todays.filter(e=>e.f).map(e=>e.f).sort()[0])||'after dark'}. Free forecast for pet owners:`
+    ? `Fireworks near ${place} tonight: ${todays.length} display${todays.length>1?'s':''}, first bangs ${(todays.filter(e=>e.f).map(e=>e.f).sort()[0])||'after dark'}. Free forecast for pet owners:`
     : `Fireworks displays near ${place} this week, with start times, so you can get the dog walked and settled first:`;
   html += shareBar(shareMsg, area);
   $('#tonight').innerHTML = html;
@@ -563,7 +569,7 @@ function render(){
   const byDate = {};
   near.forEach(e=>{(byDate[e.d]=byDate[e.d]||[]).push(e);});
   const dates = Object.keys(byDate).sort();
-  if (!dates.length){ $('#nights').innerHTML = `<p class="empty">No public displays listed within ${radius} miles. Try 15 miles, or check back: we add displays daily.</p>`; }
+  if (!dates.length){ $('#nights').innerHTML = `<p class="empty">No displays listed within ${radius} miles. Try 15 miles, or check back: we add displays daily.</p>`; }
   else $('#nights').innerHTML = dates.map(d=>{
     const list = byDate[d];
     const known = list.filter(e=>e.f).map(e=>e.f).sort();
@@ -573,6 +579,7 @@ function render(){
       ${list.map(evRow).join('')}</div>`;
   }).join('');
   if (!$('#sPc').value) $('#sPc').value = here.code || '';
+  try{ nyeCopy(!near.length); }catch(e){}
   try{ setSticky(!secVisible); }catch(e){}
 }
 
@@ -619,8 +626,8 @@ document.querySelectorAll('.petchip').forEach(b=>b.addEventListener('click', ()=
     if (tmw){
       $('#sHead').textContent = `${tmw.t} is tomorrow night`;
       $('#signupForm').classList.add('timely');
-      $('#sLede').textContent = `Fireworks are allowed until ${tmw.c}, and most aren't listed anywhere. Join free: your Quiet Night plan now, and a heads-up tomorrow morning on what's planned near you.`;
-      $('#stickyTxt').textContent = `${tmw.t} is tomorrow: get the morning heads-up`;
+      $('#sLede').textContent = `Fireworks are allowed until ${tmw.c}, and most aren't listed anywhere. Join free: your Quiet Night plan now, and a heads-up before any display near you.`;
+      $('#stickyTxt').textContent = `${tmw.t} is tomorrow: get the heads-up`;
     } else if (tonight){
       $('#sHead').textContent = `It's ${tonight.t} tonight`;
       $('#signupForm').classList.add('timely');
@@ -629,12 +636,27 @@ document.querySelectorAll('.petchip').forEach(b=>b.addEventListener('click', ()=
     }
   }catch(e){}
 })();
+/* After the autumn displays: talk about New Year's Eve instead */
+const NYE_HEAD = "Get a heads-up before New Year's Eve";
+const NYE_LEDE = "Fireworks are allowed until 1am on New Year's Eve. Join free for your Quiet Night plan now, a short weekly countdown to the night, and a heads-up the day before any display near you.";
+let S0 = null;
+function nyeCopy(on){
+  if ($('#signupForm').classList.contains('timely')) return;
+  if (!S0) S0 = { h: $('#sHead').textContent, l: $('#sLede').textContent, k: $('#stickyTxt').textContent };
+  $('#sHead').textContent = on ? NYE_HEAD : S0.h;
+  $('#sLede').textContent = on ? NYE_LEDE : S0.l;
+  $('#stickyTxt').textContent = on ? "Get a heads-up before New Year's Eve" : S0.k;
+}
+try{ if (!EVENTS.some(e=>e.d>=today() && e.s==='on')) nyeCopy(true); }catch(e){}
 /* Funnel: did they see the box, start it, or use the phone bar? */
 let seenSent=false, startSent=false, stickyOff=false;
 function signed(){ try{ return localStorage.getItem('ff_signed')==='1'; }catch(e){ return false; } }
 function setSticky(show){ const b=$('#stickyJoin'); const on = show && !stickyOff && !signed() && window.innerWidth<700; b.hidden=!on; document.body.classList.toggle('has-sticky', on); }
 let secVisible=false;
-try{ new IntersectionObserver(es=>{ es.forEach(en=>{ secVisible=en.isIntersecting; if (secVisible && !seenSent && $('#results').style.display==='block'){ seenSent=true; track('signup-seen'); } setSticky(!secVisible && $('#results').style.display==='block'); }); }, {threshold:0.25}).observe($('#signupSec')); }catch(e){}
+let seenNoSearch=false;
+try{ new IntersectionObserver(es=>{ es.forEach(en=>{ secVisible=en.isIntersecting; const searched = $('#results').style.display==='block'; if (secVisible && searched && !seenSent){ seenSent=true; track('signup-seen'); } if (secVisible && !searched && !seenNoSearch){ seenNoSearch=true; track('signup-seen/nosearch'); } setSticky(!secVisible && (searched || en.boundingClientRect.top < 0)); }); }, {threshold:0.25}).observe($('#signupSec')); }catch(e){}
+$('#heroJoinLink').addEventListener('click', ()=>{ track('cta/hero'); setTimeout(()=>{ try{ $('#sEmail').focus({preventScroll:true}); }catch(e){} }, 600); });
+try{ if (signed()) document.body.classList.add('signed'); }catch(e){}
 $('#sEmail').addEventListener('focus', ()=>{ if(!startSent){ startSent=true; track('signup-start'); } });
 $('#stickyBtn').addEventListener('click', ()=>{ track('cta/sticky'); $('#signupSec').scrollIntoView({behavior:'smooth', block:'start'}); setTimeout(()=>{ try{ $('#sEmail').focus({preventScroll:true}); }catch(e){} }, 600); });
 function source(){

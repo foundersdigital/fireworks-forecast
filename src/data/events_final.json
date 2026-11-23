@@ -916,5 +916,23 @@
   "lng": -1.2608,
   "loc": "area",
   "note": "Market from 12:00, lights on at 6pm. Fireworks have marked the switch-on in past years, but the council has not confirmed them for 2026."
+ },
+ {
+  "id": 54,
+  "n": "LEGOLAND Windsor New Year's Eve fireworks (resort guests only)",
+  "t": "Windsor",
+  "v": "LEGOLAND Windsor Resort, Winkfield Road",
+  "d": "2026-12-31",
+  "f": "21:30",
+  "g": "",
+  "k": "other",
+  "s": "on",
+  "u": "https://www.legoland.co.uk/short-breaks/offers-and-packages/festive-sleepovers",
+  "st": "organiser",
+  "lat": 51.4637,
+  "lng": -0.6498,
+  "loc": "pc",
+  "priv": true,
+  "note": "Only guests staying overnight at the resort can watch, but the bangs will carry to nearby homes in Windsor, Dedworth, Winkfield and Ascot, so plan the evening walk and settle pets before 9:30pm."
  }
 ]
